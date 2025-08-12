@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Livewire\CreateArticle;
+use App\Livewire\SearchArticle;
+use App\Livewire\Sections;
+use App\Livewire\Admin;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,5 +22,14 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('search', SearchArticle::class)->name('search');
+    Route::get('create', CreateArticle::class)->name('create');
+    Route::get('/sections', Sections::class)->name('sections');
+    Route::get('/admin', Admin::class)->name('admin');
+});
+
 
 require __DIR__.'/auth.php';
