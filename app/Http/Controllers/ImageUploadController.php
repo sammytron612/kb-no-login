@@ -10,12 +10,13 @@ class ImageUploadController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
-        $file = $request->file('upload');
+        $file = $request->file('file');
         $fileName = time() . $file->getClientOriginalName();
         $path = $file->storeAs('images', $fileName, 'public');
 
         $path = asset("/storage/images/" . $fileName);
 
-        return response()->json(['default' => $path]);
+        return response()->json(['location' => $path]);
+
     }
 }

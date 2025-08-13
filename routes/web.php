@@ -30,6 +30,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sections', Sections::class)->name('sections');
     Route::get('/admin', Admin::class)->name('admin');
     Route::post('/upload-image', [\App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload');
+    Route::get('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'show'])->name('articles.create');
+    Route::post('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'store'])->name('articles.store');
 });
 
 
