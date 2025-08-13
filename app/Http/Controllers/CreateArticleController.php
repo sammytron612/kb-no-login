@@ -27,7 +27,7 @@ class CreateArticleController extends Controller
             'status' => 'required',
             'article_body' => 'required|string',
             'expires' => 'nullable|date',
-            'article_body' => 'required|string',
+
         ]);
 
         $attachmentPaths = [];
