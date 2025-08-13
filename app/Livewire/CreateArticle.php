@@ -67,7 +67,7 @@ class CreateArticle extends Component
         ]);
 
         $article->update([
-            'kb' => "kb100" . $article->id,
+            'kb' => "kb" . rand(100,999) . $article->id,
             'slug' => Str::of($this->title)->slug('-') . "-" . $article->id
         ]);
 

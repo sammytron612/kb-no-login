@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('create', CreateArticle::class)->name('create');
     Route::get('/sections', Sections::class)->name('sections');
     Route::get('/admin', Admin::class)->name('admin');
+    Route::post('/upload-image', [\App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload');
 });
 
 
