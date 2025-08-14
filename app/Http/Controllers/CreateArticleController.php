@@ -23,6 +23,7 @@ class CreateArticleController extends Controller
             'tags' => 'nullable|string',
             'section' => 'required|string',
             'attachments.*' => 'file|max:10240',
+            'attachments' => 'array|max:3',
             'scope' => 'required',
             'status' => 'required',
             'article_body' => 'required|string',

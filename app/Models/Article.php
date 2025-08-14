@@ -43,4 +43,9 @@ class Article extends Model
     {
         return $this->hasOne(ArticleBody::class);
     }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class, 'sectionid', 'id');
+    }
 }
