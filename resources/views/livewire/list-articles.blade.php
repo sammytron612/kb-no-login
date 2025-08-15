@@ -2,11 +2,11 @@
     <h2 class="text-2xl font-bold mb-4">Articles</h2>
     <div class="space-y-6">
         @foreach ($articles as $article)
-            <div class="border-b pb-4 flex flex-col">
+            <div class="border shadow-lg rounded-md p-4 pb-4 flex flex-col">
                 <div class="flex items-center gap-2">
-                    <a href="#" class="text-blue-500 text-lg font-semibold hover:underline">{{ $article->title }}</a>
+                    <a href="{{ route('articles.show', $article->id) }}" class="text-blue-500 text-lg font-semibold hover:underline" wire:navigate>{{ $article->title }}</a>
                     <span class="text-gray-400">-</span>
-                    <a href="{{ route('articles.edit', $article->id) }}" class="inline-flex items-center justify-center w-8 h-8 bg-teal-400 text-white rounded hover:bg-teal-500" title="Edit">
+                    <a href="{{ route('articles.edit', $article->id) }}" class="inline-flex items-center justify-center w-8 h-8 bg-teal-400 text-white rounded hover:bg-teal-500" title="Edit" wire:navigate>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.06 2.06 0 1 1 2.915 2.915L7.5 18.68l-4 1 1-4 12.362-12.193z" />
                         </svg>
