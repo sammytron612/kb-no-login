@@ -19,19 +19,23 @@
                 </div>
                 <div class="flex flex-wrap items-center gap-3 text-sm text-gray-600 mt-2">
                     <span class="flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <flux:icon.user class="h-4" />
                         Created by {{ $article->author_name }}
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <flux:icon.bookmark class="h-4" />
+                        Section: {{ $article->section->section}}
                     </span>
                     <span class="flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
                         Views {{ $article->views ?? 0 }}
                     </span>
                     <span class="flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        <flux:icon.calendar class="h-4"/>
                         {{ $article->created_at->diffForHumans() }}
                     </span>
                     <span class="text-gray-500">-</span>
-                    <span class="font-mono text-gray-500">{{ $article->kb ?? $article->id }}</span>
+                    <span class="font-mono text-gray-500 uppercase">{{ $article->kb ?? $article->id }}</span>
                     <span class="flex items-center gap-1">
                         @if(($article->rating ?? 0) > 0)
                             @for($i = 1; $i <= 5; $i++)
