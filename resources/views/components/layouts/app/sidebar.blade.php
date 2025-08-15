@@ -15,7 +15,7 @@
                 <flux:navlist.group :heading="__('Menu')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     <flux:navlist.item  class="mt-4" icon="magnifying-glass" :href="route('search')" :current="request()->routeIs('search')" wire:navigate>{{ __('Search') }}</flux:navlist.item>
-                    <flux:navlist.item class="mt-4" icon="plus-circle" :href="route('articles.create')" :current="request()->routeIs('articles.create')" wire:navigate>{{ __('Create') }}</flux:navlist.item>
+                    <flux:navlist.item class="mt-4" icon="plus-circle" :href="route('articles.create')" :current="request()->routeIs('articles.create')">{{ __('Create') }}</flux:navlist.item>
                     <flux:navlist.item class="mt-4" icon="rectangle-group" :href="route('sections')" :current="request()->routeIs('sections')" wire:navigate>{{ __('Sections') }}</flux:navlist.item>
                     <flux:navlist.item class="mt-4" icon="shield-check" :href="route('admin')" :current="request()->routeIs('admin')" wire:navigate>{{ __('Admin') }}</flux:navlist.item>
                 </flux:navlist.group>
