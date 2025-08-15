@@ -10,6 +10,8 @@ class ArticlesShowController extends Controller
     public function show($id)
     {
         $article = Article::with('body')->findOrFail($id);
+        $article->increment('views');
+
         return view('articles.show', compact('article'));
     }
 }
