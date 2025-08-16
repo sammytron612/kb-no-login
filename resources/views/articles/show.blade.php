@@ -24,7 +24,9 @@
         <div class="mb-4 flex items-center justify-between">
             <div><span class="font-semibold">Section</span> - <a href="#" class="text-blue-500 underline font-semibold">{{ $article->section ? $article->section->section : '' }}</a></div>
             <div class="mt-4 gap-4 flex">
-                <a href="#" class="bg-blue-400 text-white px-4 py-1 text-sm rounded hover:bg-blue-600">Edit</a>
+                @can('canEditOrDelete', $article)
+                    <a href="{{ route('articles.edit', $article->id) }}" class="bg-blue-400 text-white px-4 py-1 text-sm rounded hover:bg-blue-600">Edit</a>
+                @endcan
                 <a href="#" class="bg-slate-300 text-zinc-700 px-4 py-1 text-sm  rounded hover:bg-slate-500 transition">Print</a>
                 @can('canEditOrDelete', $article)
                     <a href="#" class="bg-red-800 text-red-100 hover:text-red-100 px-4 py-1 text-sm  rounded hover:bg-red-700 transition">Delete</a>

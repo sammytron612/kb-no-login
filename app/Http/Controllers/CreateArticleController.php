@@ -34,8 +34,8 @@ class CreateArticleController extends Controller
         $attachmentPaths = [];
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
-                $originalName = $file->getClientOriginalName();
-                $originalName = Str::slug($originalName, '-') . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $originalName = $file->getClientOriginalName() . "-" . time();
+                $originalName = $file->getClientOriginalExtension();
                 $path = $file->storeAs('attachments', $originalName, 'public');
                 $attachmentPaths[] = $path;
             }

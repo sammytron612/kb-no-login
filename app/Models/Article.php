@@ -48,4 +48,9 @@ class Article extends Model
     {
         return $this->belongsTo(Section::class, 'sectionid', 'id');
     }
+
+    public function authorUser()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'author');
+    }
 }

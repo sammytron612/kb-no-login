@@ -3,7 +3,7 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
+    <body class="min-h-screen bg-white bg-gradient-to-br from-white via-slate-100 to-slate-400dark:bg-zinc-800">
         <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
@@ -18,6 +18,8 @@
                     <flux:navlist.item class="mt-4" icon="plus-circle" :href="route('articles.create')" :current="request()->routeIs('articles.create')">{{ __('Create') }}</flux:navlist.item>
                     <flux:navlist.item class="mt-4" icon="rectangle-group" :href="route('sections')" :current="request()->routeIs('sections')" wire:navigate>{{ __('Sections') }}</flux:navlist.item>
                     <flux:navlist.item class="mt-4" icon="shield-check" :href="route('admin')" :current="request()->routeIs('admin')" wire:navigate>{{ __('Admin') }}</flux:navlist.item>
+                    <flux:navlist.item class="mt-4" icon="document" :href="route('drafts')" :current="request()->routeIs('drafts')" wire:navigate>{{ __('My Drafts') }}</flux:navlist.item>
+                    <flux:navlist.item class="mt-4" icon="chart-bar" :href="route('stats')" :current="request()->routeIs('stats')" wire:navigate>{{ __('Stats') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 

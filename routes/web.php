@@ -7,14 +7,13 @@ use Livewire\Volt\Volt;
 use App\Livewire\Sections;
 use App\Livewire\Admin;
 use App\Livewire\ArticleSearch;
+use App\Http\Controllers\DraftsController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -35,9 +34,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit');
     Route::put('articles/{id}', [\App\Http\Controllers\EditArticleController::class, 'update'])->name('articles.update');
     Route::get('/articles/{id}', [\App\Http\Controllers\ArticlesShowController::class, 'show'])->name('articles.show');
+    Route::get('/drafts', [DraftsController::class, 'index'])->name('drafts');
+    Route::get('/stats', [\App\Http\Controllers\StatsController::class, 'index'])->name('stats');
 
 });
-    //Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit')->middleware(['can:isAdmin'] || 'can:CanEditOrDelete');
+//Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit')->middleware(['can:isAdmin'] || 'can:CanEditOrDelete');
+
+Route::get('/api/articles/most-viewed', [\App\Http\Controllers\Api\ArticleStatsController::class, 'mostViewed']);
 
 
 require __DIR__.'/auth.php';

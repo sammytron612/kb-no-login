@@ -1,10 +1,10 @@
 <x-layouts.app>
-<div class="container mx-auto py-8">
-    <h2 class="text-2xl font-bold mb-4">Edit Article</h2>
+<div class="container bg-white p-4 mx-auto py-8">
+    <h2 class="text-2xl font-bold mb-4 text-blue-500">Edit Article</h2>
     @if (session('success'))
         <div class="p-2 bg-green-100 text-green-800 rounded mb-4">{{ session('success') }}</div>
     @endif
-    <form action="{{ route('articles.update', $article->id) }}" method="POST" class="space-y-6">
+    <form action="{{ route('articles.update', $article->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('PUT')
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -45,15 +45,41 @@
             </div>
             <div>
                 <label for="expires" class="block font-medium">Expires</label>
-                <input type="date" name="expires" id="expires" class="w-full border rounded p-2" value="{{ old('expires', $article->expires->format('Y-m-d')) }}" />
+                    @if($article->expires)
+                        <input type="date" name="expires" id="expires" class="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="{{ old('expires', $article->expires->format('Y-m-d')) }}" />
+                    @else
+                        <input type="date" name="expires" id="expires" class="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="" />
+                    @endif
                 @error('expires') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
             </div>
+             <div>
+                <label class="block font-medium mb-1">Existing Attachments</label>
+                @if(!empty($article->attachments))
+                    <ul class="list-disc pl-5 mb-4">
+                        @foreach($article->attachments as $attachment)
+                            <li class="flex mt-1" id="attachment-{{$loop->index}}">
+                                <a href="{{ asset('storage/' . $attachment) }}" target="_blank" class="text-blue-600 hover:underline">{{ basename($attachment) }}</a>
+                                <livewire:remove-attachment :attachment="$attachment" :articleId="$article->id" :attachmentIndex="$loop->index"/>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <div class="text-gray-500 mb-4">No attachments found.</div>
+                @endif
+            </div>
+            <div>
+                <label for="attachments" class="block font-semibold mb-1">Attachments</label>
+                <input type="file" name="attachments[]" id="attachments" multiple class="w-full border border-slate-300 rounded-lg p-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                @error('attachments') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+            </div>
+
         </div>
         <div>
                 <label for="article_body" class="block font-medium">Body</label>
                 <textarea name="article_body" id="editor" class="w-full border rounded p-2 h-32" >{{old('article_body',$article->body->body)}}</textarea>
                 @error('article_body') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
-            </div>
+        </div>
+
         <button type="submit" class="hover:cursor-pointer hover:bg-blue-500 px-4 py-2 bg-blue-600 text-white rounded">Update Article</button>
     </form>
 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Section;
+use Illuminate\Support\Str;
 
 class EditArticleController extends Controller
 {
@@ -20,22 +21,63 @@ class EditArticleController extends Controller
 
     public function update(Request $request, $id)
     {
+
+
         $article = Article::findOrFail($id);
+
+        if($request->hasFile('attachments')) {
+
+            $attachCount = (count($request->attachments)) + count($article->attachments);
+
+        }
+        else
+        {
+            $attachCount = count($article->attachments);
+        }
+
+
+        if ($attachCount > 3) {
+
+            return redirect()->back()->withErrors(['attachments' => 'You can only have up to 3 attachements.']);
+        }
+
+        $attachmentPaths = $article->attachments;
+
+
+        if ($request->hasFile('attachments')) {
+
+            foreach ($request->file('attachments') as $file) {
+                $originalName = time() . "-" . $file->getClientOriginalName();
+
+
+                $path = $file->storeAs('attachments', $originalName, 'public');
+                $attachmentPaths[] = $path;
+            }
+        }
+
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'tags' => 'nullable|string',
             'sectionid' => 'required|integer',
             'scope' => 'required',
+            'attachments.*' => 'file|max:10240',
             'published' => 'required',
             'expires' => 'nullable|date',
             'article_body' => 'required|string',
 
         ]);
+
         $article->body->where('article_id',$article->id)->update(['body' => $request->input('article_body')]);
 
-        $article->update($validated);
-
+        $article->title = $validated['title'];
+        $article->tags = $validated['tags'];
+        $article->sectionid = $validated['sectionid'];
+        $article->scope = $validated['scope'];
+        $article->published = $validated['published'];
+        $article->expires = $validated['expires'];
+        $article->attachments = $attachmentPaths;
+        $article->save();
 
         return redirect()->route('articles.edit', $article->id)->with('success', 'Article updated successfully!');
     }
