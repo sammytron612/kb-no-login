@@ -54,4 +54,5 @@
             {{ $articles->links() }}
         </div>
     </div>
+
 </div>

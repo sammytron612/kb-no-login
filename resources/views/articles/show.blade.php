@@ -39,4 +39,10 @@
 
     </div>
 </div>
+<div class="mt-8">
+    <livewire:article-feedback :article="$article" />
+</div>
+<div class="mt-8">
+    <livewire:article-latest-comments :article="$article" />
+</div>
 </x-layouts.app>
