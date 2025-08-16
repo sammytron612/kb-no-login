@@ -25,11 +25,19 @@ class AppServiceProvider extends ServiceProvider
     {
 
         Gate::define('isAdmin', function($user) {
-            return $user->admin === 1;
+            return $user->role === 1;
             });
-
+        Gate::define('isEditor', function($user) {
+            return $user->role === 2;
+            });
+        Gate::define('isViewer', function($user) {
+            return $user->role === 3;
+            });
+        Gate::define('canCreate', function($user) {
+            return ($user->role === 1 || $user->role === 2);
+            });
         Gate::define('canEditOrDelete', function($user, $article) {
-            return ($user->admin === 1 || $user->id === $article->author);
+            return ($user->role === 1 || $user->id === $article->author);
             });
     }
 }

@@ -6,13 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Section;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
 
 class EditArticleController extends Controller
 {
+
     public function edit($id)
     {
 
         $article = Article::findOrFail($id);
+        if (! Gate::allows('canEditOrDelete', $article)) {
+            abort(403);}
+
         $sections = Section::all();
 
 

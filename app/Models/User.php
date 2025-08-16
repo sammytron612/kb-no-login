@@ -22,7 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'admin'
+        'role'
     ];
 
     /**
@@ -63,10 +63,5 @@ class User extends Authenticatable
     public function articles()
     {
         return $this->hasMany(\App\Models\Article::class, 'author');
-    }
-
-    public function comments()
-    {
-        return $this->hasMany(\App\Models\Comment::class, 'user_id');
     }
 }
