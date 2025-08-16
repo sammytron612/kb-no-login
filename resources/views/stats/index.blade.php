@@ -4,21 +4,41 @@
     <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white dark:bg-zinc-800 rounded-xl shadow p-6 flex flex-col items-center">
             <span class="text-3xl font-bold text-blue-500">{{ $totalArticles }}</span>
-            <span class="text-gray-600 dark:text-gray-300 mt-2">Total Articles</span>
+            <span class="text-gray-600 dark:text-gray-300 mt-2 font-bold">Total Articles</span>
         </div>
         <div class="bg-white dark:bg-zinc-800 rounded-xl shadow p-6 flex flex-col items-center">
             <span class="text-3xl font-bold text-blue-500">{{ $totalViews }}</span>
-            <span class="text-gray-600 dark:text-gray-300 mt-2">Total Views</span>
+            <span class="text-gray-600 dark:text-gray-300 mt-2 font-bold">Total Views</span>
+        </div>
+        <div class="bg-white dark:bg-zinc-800 rounded-xl shadow p-6 flex flex-col items-center">
+
+            <span class="text-3xl font-bold text-blue-500">
+                {{ $mostViewedArticle ? $mostViewedArticle->title : 'N/A' }}
+            </span>
+            <span class="text-gray-600 dark:text-gray-300 mt-2 text-sm">
+                Author: {{ $mostViewedArticle->author_name }}
+            </span>
+            <span class="text-gray-600 dark:text-gray-300 mt-2 text-sm">
+                Views: {{ $mostViewedArticle ? $mostViewedArticle->views : 'N/A' }}
+            </span>
+            <span class="text-gray-600 dark:text-gray-300 mt-2 text-sm font-bold">
+                Most Viewed
+            </span>
         </div>
     </div>
     <h2 class="text-xl font-semibold mb-4">Top 5 Most Viewed Articles</h2>
-    <div class="grid gap-4">
-        @foreach ($topArticles as $article)
-            <div class="bg-white dark:bg-zinc-800 rounded shadow p-4 flex justify-between items-center">
-                <span class="font-semibold text-blue-600">{{ $article->title }}</span>
-                <span class="text-gray-500">Views: {{ $article->views }}</span>
-            </div>
-        @endforeach
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            @foreach ($topArticles as $article)
+                <div class="bg-white dark:bg-zinc-800 rounded shadow p-4 flex justify-between items-center">
+                    <span class="font-semibold text-blue-600">{{ $article->title }}</span>
+                    <span class="text-gray-500 font-bold">{{ $article->views }}</span>
+                </div>
+            @endforeach
+        </div>
+        <div>
+            <canvas id="mostViewedChart" class="w-full h-full"></canvas>
+        </div>
     </div>
     <div>
         <canvas id="mostViewedChart" class="w-full h-full"></canvas>

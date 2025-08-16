@@ -19,7 +19,7 @@
                     <flux:navlist.item class="mt-4" icon="rectangle-group" :href="route('sections')" :current="request()->routeIs('sections')" wire:navigate>{{ __('Sections') }}</flux:navlist.item>
                     <flux:navlist.item class="mt-4" icon="shield-check" :href="route('admin')" :current="request()->routeIs('admin')" wire:navigate>{{ __('Admin') }}</flux:navlist.item>
                     <flux:navlist.item class="mt-4" icon="document" :href="route('drafts')" :current="request()->routeIs('drafts')" wire:navigate>{{ __('My Drafts') }}</flux:navlist.item>
-                    <flux:navlist.item class="mt-4" icon="chart-bar" :href="route('stats')" :current="request()->routeIs('stats')" wire:navigate>{{ __('Stats') }}</flux:navlist.item>
+                    <flux:navlist.item class="mt-4" icon="chart-bar" :href="route('stats')" :current="request()->routeIs('stats')">{{ __('Stats') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 

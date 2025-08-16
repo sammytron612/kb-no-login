@@ -9,9 +9,11 @@ class StatsController extends Controller
 {
     public function index()
     {
-        $topArticles = Article::orderByDesc('views')->limit(5)->get();
-        $totalArticles = Article::count();
-        $totalViews = Article::sum('views');
-        return view('stats.index', compact('topArticles', 'totalArticles', 'totalViews'));
+    $topArticles = Article::orderByDesc('views')->limit(5)->get();
+    $totalArticles = Article::count();
+    $totalViews = Article::sum('views');
+    $mostViewedArticle = Article::orderByDesc('views')->first();
+
+    return view('stats.index', compact('topArticles', 'totalArticles', 'totalViews', 'mostViewedArticle'));
     }
 }
