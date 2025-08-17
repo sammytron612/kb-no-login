@@ -53,7 +53,7 @@ class CreateArticleController extends Controller
             'scope' => $validated['scope'],
             'images' => [],
             'rating' => 0,
-            'approved' => false,
+            'approved' => Auth::user()->role === 1 ? true : false ,
             'published' => $validated['status'],
             'notify_sent' => false,
             'expires' => $validated['expires'] ?? null,

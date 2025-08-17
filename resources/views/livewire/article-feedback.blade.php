@@ -9,7 +9,7 @@
             <div class="flex gap-1">
                 @for ($i = 1; $i <= 5; $i++)
                     <button type="button" wire:click="$set('rating', {{ $i }})" class="w-8 h-8 rounded-full border-2 @if($rating >= $i) border-yellow-400 bg-yellow-300 @else border-gray-300 bg-gray-100 @endif flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="{{ $rating >= $i ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-yellow-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="{{ $rating >= $i ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-yellow-500 hover:cursor-pointer">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.75l-6.172 3.245 1.179-6.88L2 9.755l6.904-1.002L12 2.25l3.096 6.503L22 9.755l-5.007 4.36 1.179 6.88z" />
                         </svg>
                     </button>

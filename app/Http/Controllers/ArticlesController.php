@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Article;
 
-class ArticlesShowController extends Controller
+class ArticlesController extends Controller
 {
     public function show($id)
     {
@@ -13,5 +13,12 @@ class ArticlesShowController extends Controller
         $article->increment('views');
 
         return view('articles.show', compact('article'));
+    }
+
+    public function destroy($id)
+    {
+        $article = Article::findOrFail($id);
+        $article->delete();
+        return redirect()->route('dashboard')->with('success', 'Article deleted successfully.');
     }
 }

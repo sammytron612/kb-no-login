@@ -80,6 +80,9 @@ class EditArticleController extends Controller
         $article->sectionid = $validated['sectionid'];
         $article->scope = $validated['scope'];
         $article->published = $validated['published'];
+        if($request->published) {
+            $article->approved = auth()->user()->role === 1 ? true : false;
+        }
         $article->expires = $validated['expires'];
         $article->attachments = $attachmentPaths;
         $article->save();

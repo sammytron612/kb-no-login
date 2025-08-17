@@ -14,7 +14,7 @@
             @csrf
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div>
-                    <label for="title" class="block font-semibold mb-1">Title</label>
+                    <label for="title" class="flex items-center block font-semibold mb-1"><span>Title</span><span>*</span></label>
                     <input type="text" name="title" id="title" class="w-full border border-slate-300 rounded-lg p-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required value="{{ old('title') }}" />
                     @error('title') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                 </div>
@@ -24,7 +24,7 @@
                     @error('tags') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div>
-                    <label for="section" class="block font-semibold mb-1">Section</label>
+                    <label for="section" class="block font-semibold mb-1">Section<span>*</span></label>
                     <input type="text" name="section" id="section" class="w-full border border-slate-300 rounded-lg p-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required value="{{ old('section') }}" />
                     @error('section') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                 </div>
@@ -34,7 +34,7 @@
                     @error('attachments.*') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div>
-                    <label for="scope" class="block font-semibold mb-1">Scope</label>
+                    <label for="scope" class="block font-semibold mb-1">Scope<span>*</span><span class="ml-2 text-xs text-blue-800">note: Private cannot be sent as an email</span></label>
                     <select name="scope" id="scope" class="w-full border border-slate-300 rounded-lg p-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="1" @if(old('scope')==1) selected @endif>Public</option>
                         <option value="2" @if(old('scope')==2) selected @endif>Private</option>
@@ -42,21 +42,21 @@
                     @error('scope') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div>
-                    <label for="status" class="block font-semibold mb-1">Status</label>
+                    <label for="status" class="block font-semibold mb-1">Status<span>*</span></label>
                     <select name="status" id="status" class="w-full border border-slate-300 rounded-lg p-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="1" @if(old('status')==1) selected @endif>Publish</option>
                         <option value="0" @if(old('status')==0) selected @endif>Draft</option>
+                        <option value="1" @if(old('status')==1) selected @endif>Publish</option>
                     </select>
                     @error('status') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div>
-                    <label for="expires" class="block font-semibold mb-1">Expires</label>
+                    <label for="expires" class="block font-semibold mb-1">Expires<span class="ml-2 text-xs text-blue-800">Archived after the said date and not be shown in searches</span></label>
                     <input type="date" name="expires" id="expires" class="w-full border border-slate-300 rounded-lg p-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="{{ old('expires') }}" />
                     @error('expires') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
             <div>
-                <label for="article_body" class="block font-semibold mb-1">Body</label>
+                <label for="article_body" class="block font-semibold mb-1">Body<span>*</span></label>
                 <textarea name="article_body" id="editor" class="w-full border border-slate-300 rounded-lg p-1 h-40 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                 @error('article_body') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
             </div>
