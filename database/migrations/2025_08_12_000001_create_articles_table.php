@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('kb')->nullable();
             $table->string('title');
+            $table->fullText('title');
             $table->string('slug')->unique()->nullable();
             $table->unsignedBigInteger('author');
             $table->string('author_name');

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class Article extends Model
 {
@@ -53,4 +55,21 @@ class Article extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'author');
     }
+
+    /**
+     * Scope for full-text search on articles and article_bodies.
+     */
+    public function scopeFullTextSearch(Builder $query, string $keyword): Builder
+    {
+        return $query
+            ->join('article_bodies', 'article_bodies.article_id', '=', 'articles.id')
+            ->where(function ($q) use ($keyword) {
+                $q->whereRaw("MATCH(articles.title) AGAINST (? IN NATURAL LANGUAGE MODE)", [$keyword])
+                  ->orWhereRaw("MATCH(article_bodies.body) AGAINST (? IN NATURAL LANGUAGE MODE)", [$keyword]);
+            })
+            ->select('articles.*')
+            ->with('body');
+    }
 }
+
+
