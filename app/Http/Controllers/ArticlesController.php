@@ -18,6 +18,16 @@ class ArticlesController extends Controller
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
+
+        if (! \Gate::allows('canEditOrDelete', $article)) {
+            abort(403);
+        }
+        // Delete attachments from storage
+        if (!empty($article->attachments)) {
+            foreach ($article->attachments as $attachment) {
+                \Storage::disk('public')->delete($attachment);
+            }
+        }
         $article->delete();
         return redirect()->route('dashboard')->with('success', 'Article deleted successfully.');
     }

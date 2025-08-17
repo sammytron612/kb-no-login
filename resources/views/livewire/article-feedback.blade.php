@@ -22,6 +22,6 @@
             <textarea wire:model.defer="comment" class="w-full border border-slate-300 rounded-lg p-3 h-24 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
             @error('comment') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition">Submit</button>
+        <button type="submit" class="bg-blue-600 text-white px-6 py-2 hover:bg-blue-700 hover:cursor-pointer rounded-lg font-semibold shadow hover:bg-blue-700 transition">Submit</button>
     </form>
 </div>

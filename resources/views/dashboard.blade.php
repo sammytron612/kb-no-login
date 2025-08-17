@@ -14,6 +14,9 @@
                 <span class="text-gray-600 dark:text-gray-300 mt-2">Top Contributor</span>
             </div>
         </div>
+        @if (session('success'))
+            <div class="p-2 bg-green-100 text-green-800 rounded mb-4 shadow">{{ session('success') }}</div>
+        @endif
         <div class="bg-white relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
             <livewire:list-articles />
         </div>

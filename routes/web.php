@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'store'])->name('articles.store');
     Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit');
     Route::put('articles/{id}', [\App\Http\Controllers\EditArticleController::class, 'update'])->name('articles.update');
-    Route::get('/articles/{id}', [\App\Http\Controllers\ArticlessController::class, 'show'])->name('articles.show');
+    Route::get('/articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'show'])->name('articles.show');
     Route::get('/drafts', [DraftsController::class, 'index'])->name('drafts');
     Route::get('/stats', [\App\Http\Controllers\StatsController::class, 'index'])->name('stats');
     Route::get('/admin/invites', [\App\Http\Controllers\AdminController::class, 'invites'])->name('admin.invites');

@@ -7,18 +7,28 @@
                     <a href="{{ route('articles.show', $article->id) }}" class="text-blue-500 text-lg font-semibold hover:underline" wire:navigate>{{ $article->title }}</a>
                     <span class="text-gray-400">-</span>
                     @can('canEditOrDelete', $article)
-                        <a href="{{ route('articles.edit', $article->id) }}" class="inline-flex items-center justify-center w-8 h-8 bg-teal-400 text-white rounded hover:bg-teal-500" title="Edit">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.06 2.06 0 1 1 2.915 2.915L7.5 18.68l-4 1 1-4 12.362-12.193z" />
-                            </svg>
-                        </a>
-                        @can('isAdmin')
-                            <a href="#" class="inline-flex items-center justify-center w-8 h-8 bg-red-500 text-white rounded hover:bg-red-600 ml-1" title="Delete">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        <div class="flex gap-2">
+                            <a href="{{ route('articles.edit', $article->id) }}"
+                               class="inline-flex items-center px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 hover:scale-105 hover:shadow-lg hover:cursor-pointer transition shadow">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 3.487a2.06 2.06 0 1 1 2.915 2.915L7.5 18.68l-4 1 1-4 12.362-12.193z" />
                                 </svg>
+                                Edit
                             </a>
-                        @endcan
+                            @can('isAdmin')
+                            <form action="{{ route('articles.destroy', $article->id) }}" method="POST" onsubmit="return confirm('Delete this article?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="inline-flex items-center px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 hover:scale-105 hover:shadow-lg hover:cursor-pointer transition shadow">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    Delete
+                                </button>
+                            </form>
+                            @endcan
+                        </div>
                     @endcan
                 </div>
                 <div class="flex flex-wrap items-center gap-3 text-sm text-gray-600 mt-2">
