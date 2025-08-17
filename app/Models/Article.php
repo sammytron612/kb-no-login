@@ -64,8 +64,8 @@ class Article extends Model
         return $query
             ->join('article_bodies', 'article_bodies.article_id', '=', 'articles.id')
             ->where(function ($q) use ($keyword) {
-                $q->whereRaw("MATCH(articles.title) AGAINST (? IN NATURAL LANGUAGE MODE)", [$keyword])
-                  ->orWhereRaw("MATCH(article_bodies.body) AGAINST (? IN NATURAL LANGUAGE MODE)", [$keyword]);
+                $q->whereRaw("MATCH(articles.title) AGAINST (? IN BOOLEAN MODE)", [$keyword])
+                  ->orWhereRaw("MATCH(article_bodies.body) AGAINST (? IN BOOLEAN MODE)", [$keyword]);
             })
             ->select('articles.*')
             ->with('body');
