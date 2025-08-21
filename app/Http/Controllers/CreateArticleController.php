@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\NewArticleNotification;
 use App\Models\User;
+use App\Traits\SendsEmailNotifications;
 
 class CreateArticleController extends Controller
 {
+    use SendsEmailNotifications;
+
     public function show()
     {
         $sections = \App\Models\Section::all();
@@ -25,7 +28,7 @@ class CreateArticleController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'tags' => 'nullable|string',
-            'sectionid' => 'required|integer|exists:sections,id', // Fixed: lowercase 'sectionid'
+            'sectionid' => 'required|integer|exists:sections,id',
             'attachments.*' => 'file|max:10240',
             'attachments' => 'array|max:3',
             'scope' => 'required',
@@ -49,7 +52,7 @@ class CreateArticleController extends Controller
             'title' => $validated['title'],
             'author' => Auth::id(),
             'author_name' => Auth::user()->name ?? '',
-            'sectionid' => $validated['sectionid'], // Fixed: use 'sectionid'
+            'sectionid' => $validated['sectionid'],
             'tags' => $validated['tags'] ? explode(',', $validated['tags']) : [],
             'attachments' => $attachmentPaths,
             'views' => 0,
@@ -73,35 +76,12 @@ class CreateArticleController extends Controller
             'body' => $validated['article_body'],
         ]);
 
-        // Only send emails if article is published
-        if ($validated['published'] == 1) {
+        // Only send emails if article is published and approved
+        if ($validated['published'] == 1 && $article->approved == 1) {
             $this->emailUsers($article);
         }
 
         return redirect()->back()->with('success', 'Article created successfully!');
-    }
-
-
-
-    private function emailUsers($article)
-    {
-        $users = Auth::user()->otherUsers();
-
-        if ($users->isEmpty()) {
-            Log::info("No other users found to email for article: {$article->title}");
-            return;
-        }
-
-        foreach ($users as $user) {
-            try {
-                Log::info("Attempting to send email to: {$user->email}");
-                Mail::to($user->email)->send(new NewArticleNotification($article, $user));
-                Log::info("Email sent to: {$user->email}");
-            } catch (\Exception $e) {
-
-                Log::error("Failed to send email to {$user->email}: " . $e->getMessage());
-            }
-        }
     }
 }
 
