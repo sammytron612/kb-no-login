@@ -12,7 +12,14 @@ class ListArticles extends Component
 
     public function render()
     {
-        $articles = Article::with('section')->latest()->paginate(10);
+        $articles = Article::where(function ($q) {
+                    $q->whereNull('expires')
+                    ->orWhere('expires', '>', now());
+                })
+            ->where('articles.approved',1)
+            ->where('articles.published',1)
+            ->with('section')->latest()->paginate(10);
+
         return view('livewire.list-articles', compact('articles'));
     }
 }

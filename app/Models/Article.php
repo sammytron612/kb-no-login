@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Article extends Model
 {
@@ -67,6 +68,13 @@ class Article extends Model
                 $q->whereRaw("MATCH(articles.title) AGAINST (? IN BOOLEAN MODE)", [$keyword])
                   ->orWhereRaw("MATCH(article_bodies.body) AGAINST (? IN BOOLEAN MODE)", [$keyword]);
             })
+
+            ->where(function ($q) {
+                    $q->whereNull('expires')
+                    ->orWhere('expires', '>', now());
+                })
+            ->where('articles.approved',1)
+            ->where('articles.published',1)
             ->select('articles.*')
             ->with('body');
     }
