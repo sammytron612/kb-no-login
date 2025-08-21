@@ -157,10 +157,10 @@
                         <label for="article_body" class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                             Article Content <span class="text-red-500">*</span>
                         </label>
-                        <div class="border border-gray-300 dark:border-zinc-600 rounded-lg overflow-hidden">
+                        <div class="tinymce-wrapper w-full">
                             <textarea name="article_body" id="editor"
-                                      class="w-full border-0 focus:ring-0 resize-none"
-                                      placeholder="Start writing your article content here...">{{ old('article_body') }}</textarea>
+                                    class="w-full"
+                                    placeholder="Start writing your article content here...">{{ old('article_body') }}</textarea>
                         </div>
                         @error('article_body') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
                     </div>
@@ -188,57 +188,116 @@
         </div>
     </div>
 
+
     <!-- TinyMCE Scripts -->
     <script src="https://cdn.tiny.cloud/1/qpuriefs0vhoo7azs8ty9kf1lyz69bininv5bq6grbpqpbh7/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
-        tinymce.init({
-            licence_key: 'qpuriefs0vhoo7azs8ty9kf1lyz69bininv5bq6grbpqpbh7',
-            height: 600,
-            selector: '#editor',
-            plugins: 'template autoresize autolink image fullscreen imagetools emoticons link lists hr paste media table code',
-            toolbar: 'insert undo redo fullscreen | fontsizeselect | alignleft aligncenter alignright alignjustify | h1 h2 h3 | bold italic underline strikethrough | numlist bullist | image link emoticons hr | paste table code',
-            contextmenu: "link image table paste",
-            content_style: `
-                body {
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                    font-size: 14px;
-                    line-height: 1.6;
-                    color: #374151;
-                    padding: 20px;
+        let isInitialized = false;
+        let resizeTimer = null;
+
+        function initTinyMCE() {
+            if (isInitialized) return;
+
+            const isMobile = window.innerWidth <= 768;
+
+            tinymce.init({
+                licence_key: 'qpuriefs0vhoo7azs8ty9kf1lyz69bininv5bq6grbpqpbh7',
+                selector: '#editor',
+                height: 400,
+                width: '100%',
+                resize: true,
+                plugins: 'autoresize advlist lists link image fullscreen code table media searchreplace paste wordcount',
+                toolbar: isMobile ?
+                    'undo redo | bold italic | bullist numlist | link' :
+                    'undo redo | styleselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image table | code fullscreen',
+                toolbar_mode: 'sliding',
+                menubar: false,
+                branding: false,
+                autoresize_bottom_margin: 50,
+                content_style: 'body { font-family: system-ui, sans-serif; font-size: 14px; line-height: 1.6; margin: 1rem; } img { max-width: 100%; height: auto; }',
+
+                setup: function(editor) {
+                    editor.on('init', function() {
+                        isInitialized = true;
+                        console.log('TinyMCE initialized');
+
+                        // Ensure proper sizing
+                        setTimeout(() => {
+                            const container = editor.getContainer();
+                            if (container) {
+                                container.style.width = '100%';
+                            }
+                        }, 100);
+                    });
+                },
+
+                images_upload_handler: function (blobInfo, success, failure) {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '{{ route("image.upload") }}');
+                    xhr.setRequestHeader("X-CSRF-Token", '{{ csrf_token() }}');
+
+                    xhr.onload = function () {
+                        if (xhr.status !== 200) {
+                            failure('HTTP Error: ' + xhr.status);
+                            return;
+                        }
+
+                        let json;
+                        try {
+                            json = JSON.parse(xhr.responseText);
+                        } catch(e) {
+                            failure('Invalid JSON');
+                            return;
+                        }
+
+                        if (!json.location) {
+                            failure('No location in response');
+                            return;
+                        }
+
+                        success(json.location);
+                    };
+
+                    const formData = new FormData();
+                    formData.append('file', blobInfo.blob(), blobInfo.filename());
+                    xhr.send(formData);
                 }
-                h1, h2, h3 { color: #1f2937; margin-top: 1em; margin-bottom: 0.5em; }
-                p { margin-bottom: 1em; }
-            `,
-            templates: [
-                {title: 'FAQ Template', description: 'Question and Answer format', content: '<h2>Frequently Asked Questions</h2><h3>Question 1</h3><p>Answer to question 1...</p>'},
-                {title: 'Step by Step Guide', description: 'Numbered steps template', content: '<h2>Step by Step Guide</h2><ol><li>First step</li><li>Second step</li><li>Third step</li></ol>'},
-                {title: 'Troubleshooting Template', description: 'Problem solving format', content: '<h2>Troubleshooting</h2><h3>Problem</h3><p>Description of the problem...</p><h3>Solution</h3><p>Steps to resolve...</p>'}
-            ],
-            autoresize_bottom_margin: 50,
-            images_upload_handler: function (blobInfo, success, failure) {
-                var xhr, formData;
-                xhr = new XMLHttpRequest();
-                xhr.withCredentials = false;
-                xhr.open('POST', '{{ route("image.upload") }}');
-                var token = '{{ csrf_token() }}';
-                xhr.setRequestHeader("X-CSRF-Token", token);
-                xhr.onload = function() {
-                    var json;
-                    if (xhr.status != 200) {
-                        failure('HTTP Error: ' + xhr.status);
-                        return;
+            });
+        }
+
+        function handleResize() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const editor = tinymce.get('editor');
+                if (editor) {
+                    // Just repaint, don't destroy
+                    editor.execCommand('mceRepaint');
+
+                    // Ensure container width
+                    const container = editor.getContainer();
+                    if (container) {
+                        container.style.width = '100%';
                     }
-                    json = JSON.parse(xhr.responseText);
-                    if (!json || typeof json.location != 'string') {
-                        failure('Invalid JSON: ' + xhr.responseText);
-                        return;
-                    }
-                    success(json.location);
-                };
-                formData = new FormData();
-                formData.append('file', blobInfo.blob(), blobInfo.filename());
-                xhr.send(formData);
+                }
+            }, 250);
+        }
+
+        // Initialize when ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait a bit for layout to settle
+            setTimeout(initTinyMCE, 100);
+        });
+
+        // Handle resize without destroying
+        window.addEventListener('resize', handleResize);
+
+        // Handle visibility changes (for sidebar)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                handleResize();
             }
         });
     </script>
+
+
 </x-layouts.app>
