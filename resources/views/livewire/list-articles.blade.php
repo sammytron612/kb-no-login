@@ -117,9 +117,91 @@
 
         <!-- Pagination -->
         @if($articles->hasPages())
-            <div class="mt-12 flex justify-center">
-                <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-gray-200 dark:border-zinc-700 p-2">
-                    {{ $articles->links() }}
+            <div class="mt-12">
+                <div class="flex flex-col items-center">
+                    <!-- Pagination Info -->
+                    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                        <span class="font-medium text-gray-900 dark:text-white">{{ $articles->firstItem() }}</span>
+                        to
+                        <span class="font-medium text-gray-900 dark:text-white">{{ $articles->lastItem() }}</span>
+                        of
+                        <span class="font-medium text-gray-900 dark:text-white">{{ $articles->total() }}</span>
+                        results
+                    </div>
+
+                    <!-- Pagination Buttons -->
+                    <div class="flex items-center space-x-2">
+                        {{-- Previous Page Link --}}
+                        @if ($articles->onFirstPage())
+                            <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 dark:bg-zinc-700 dark:text-zinc-500 border border-gray-300 dark:border-zinc-600 rounded-lg cursor-not-allowed">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Previous
+                            </span>
+                        @else
+                            <a href="{{ $articles->previousPageUrl() }}"
+                               class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 shadow-sm hover:shadow-md">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Previous
+                            </a>
+                        @endif
+
+                        {{-- Pagination Elements --}}
+                        @foreach ($articles->getUrlRange(1, $articles->lastPage()) as $page => $url)
+                            @if ($page == $articles->currentPage())
+                                <span class="inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-blue-600 border border-blue-600 rounded-lg shadow-lg">
+                                    {{ $page }}
+                                </span>
+                            @elseif ($page == 1 || $page == $articles->lastPage() || ($page >= $articles->currentPage() - 2 && $page <= $articles->currentPage() + 2))
+                                <a href="{{ $url }}"
+                                   class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200 shadow-sm hover:shadow-md">
+                                    {{ $page }}
+                                </a>
+                            @elseif ($page == $articles->currentPage() - 3 || $page == $articles->currentPage() + 3)
+                                <span class="inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                                    </svg>
+                                </span>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Page Link --}}
+                        @if ($articles->hasMorePages())
+                            <a href="{{ $articles->nextPageUrl() }}"
+                               class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 shadow-sm hover:shadow-md">
+                                Next
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        @else
+                            <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 dark:bg-zinc-700 dark:text-zinc-500 border border-gray-300 dark:border-zinc-600 rounded-lg cursor-not-allowed">
+                                Next
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </span>
+                        @endif
+                    </div>
+
+                    <!-- Quick Jump (for large datasets) -->
+                    @if($articles->lastPage() > 10)
+                        <div class="mt-4 flex items-center space-x-2">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Go to page:</span>
+                            <input type="number"
+                                   min="1"
+                                   max="{{ $articles->lastPage() }}"
+                                   value="{{ $articles->currentPage() }}"
+
+                                   onchange="window.location.href='{{ $articles->url(1) }}'.replace('page=1', 'page=' + this.value)"
+                                   class="w-16 px-2 py-1 text-sm border border-gray-300 dark:border-zinc-600 rounded-md bg-white dark:bg-zinc-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">of {{ $articles->lastPage() }}</span>
+                        </div>
+                    @endif
                 </div>
             </div>
         @endif
