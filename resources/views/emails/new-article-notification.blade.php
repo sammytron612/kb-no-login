@@ -17,6 +17,9 @@
     </style>
 </head>
 <body>
+     @php
+        use Illuminate\Support\Str;
+    @endphp
     <div class="container">
         <div class="header">
             <h1>📄 New Knowledge Base Article</h1>
@@ -35,7 +38,7 @@
                     <p><strong>📁 Section:</strong> {{ $article->section ? $article->section->section : 'No section' }}</p>
                     <p><strong>👤 Author:</strong> {{ $article->author_name }}</p>
                     <p><strong>📅 Published:</strong> {{ $article->created_at->format('M j, Y \a\t g:i A') }}</p>
-                    <p><strong>🏷️ KB ID:</strong> {{ $article->kb }}</p>
+                    <p><strong class="uppercase">🏷️ KB ID:</strong> {{ $article->kb }}</p>
 
                     @if($article->tags && count($article->tags) > 0)
                         <p><strong>🏷️ Tags:</strong> {{ implode(', ', $article->tags) }}</p>

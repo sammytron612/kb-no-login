@@ -69,7 +69,7 @@
                                 Section <span class="text-red-500">*</span>
                             </label>
                             <livewire:section-selector
-                                name="section"
+                                name="sectionid"
                                 :selected="old('section')"
                                 :required="true"
                                 placeholder="Search or select a section..."
@@ -114,12 +114,12 @@
 
                         <!-- Status -->
                         <div>
-                            <label for="status" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <label for="published" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 Status <span class="text-red-500">*</span>
                             </label>
-                            <select name="status" id="status"
+                            <select name="published" id="published"
                                     class="w-full px-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-zinc-700 dark:text-white transition-all duration-200">
-                                <option value="0" @if(old('status')==0) selected @endif>
+                                <option value="0" @if(old('published')==0) selected @endif>
                                     📝 Draft - Save for later
                                 </option>
                                 <option value="1" @if(old('status')==1) selected @endif>

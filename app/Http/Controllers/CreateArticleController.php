@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\NewArticleNotification;
+use App\Models\User;
 
 class CreateArticleController extends Controller
 {
@@ -24,11 +25,11 @@ class CreateArticleController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'tags' => 'nullable|string',
-            'section' => 'required|int',
+            'sectionid' => 'required|integer|exists:sections,id', // Fixed: lowercase 'sectionid'
             'attachments.*' => 'file|max:10240',
             'attachments' => 'array|max:3',
             'scope' => 'required',
-            'status' => 'required',
+            'published' => 'required',
             'article_body' => 'required|string',
             'expires' => 'nullable|date',
         ]);
@@ -48,7 +49,7 @@ class CreateArticleController extends Controller
             'title' => $validated['title'],
             'author' => Auth::id(),
             'author_name' => Auth::user()->name ?? '',
-            'sectionid' => $validated['section'],
+            'sectionid' => $validated['sectionid'], // Fixed: use 'sectionid'
             'tags' => $validated['tags'] ? explode(',', $validated['tags']) : [],
             'attachments' => $attachmentPaths,
             'views' => 0,
@@ -57,7 +58,7 @@ class CreateArticleController extends Controller
             'images' => [],
             'rating' => 0,
             'approved' => Auth::user()->role === 1 ? true : false,
-            'published' => $validated['status'],
+            'published' => $validated['published'],
             'notify_sent' => false,
             'expires' => $validated['expires'] ?? null,
         ]);
@@ -72,78 +73,35 @@ class CreateArticleController extends Controller
             'body' => $validated['article_body'],
         ]);
 
-        // Only send emails if article is published and public
-        if ($validated['status'] == 1 && $validated['scope'] == 1) {
-            $this->emailUsers($article->id);
+        // Only send emails if article is published
+        if ($validated['published'] == 1) {
+            $this->emailUsers($article);
         }
 
         return redirect()->back()->with('success', 'Article created successfully!');
     }
 
-    private function emailUsers($articleId)
+
+
+    private function emailUsers($article)
     {
-        try {
-            // Get the article with its relationships
-            $article = Article::with(['section', 'body'])->find($articleId);
+        $users = Auth::user()->otherUsers();
 
-            if (!$article) {
-                Log::error("Article not found for email notification: ID {$articleId}");
-                return;
+        if ($users->isEmpty()) {
+            Log::info("No other users found to email for article: {$article->title}");
+            return;
+        }
+
+        foreach ($users as $user) {
+            try {
+                Log::info("Attempting to send email to: {$user->email}");
+                Mail::to($user->email)->send(new NewArticleNotification($article, $user));
+                Log::info("Email sent to: {$user->email}");
+            } catch (\Exception $e) {
+
+                Log::error("Failed to send email to {$user->email}: " . $e->getMessage());
             }
-
-            // Get all users except the current user
-            $users = Auth::user()->otherUsers();
-
-            if ($users->isEmpty()) {
-                Log::info("No other users found to email for article: {$article->title}");
-                return;
-            }
-
-            $emailsSent = 0;
-            $emailsFailed = 0;
-
-            foreach ($users as $user) {
-                try {
-                    // Send email to each user
-                    Mail::to($user->email)->send(new NewArticleNotification($article, $user));
-                    $emailsSent++;
-
-                    Log::info("Article notification sent to: {$user->email}", [
-                        'article_id' => $article->id,
-                        'article_title' => $article->title,
-                        'recipient' => $user->email
-                    ]);
-
-                } catch (\Exception $e) {
-                    $emailsFailed++;
-                    Log::error("Failed to send article notification to: {$user->email}", [
-                        'article_id' => $article->id,
-                        'article_title' => $article->title,
-                        'recipient' => $user->email,
-                        'error' => $e->getMessage()
-                    ]);
-                }
-            }
-
-            // Update the article to mark notifications as sent
-            if ($emailsSent > 0) {
-                $article->update(['notify_sent' => true]);
-            }
-
-            Log::info("Article notification summary", [
-                'article_id' => $article->id,
-                'article_title' => $article->title,
-                'emails_sent' => $emailsSent,
-                'emails_failed' => $emailsFailed,
-                'total_users' => $users->count()
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error("Error in emailUsers method", [
-                'article_id' => $articleId,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
         }
     }
 }
+

@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Article;
 use App\Models\User;
 
-class NewArticleNotification extends Mailable implements ShouldQueue
+class NewArticleNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
