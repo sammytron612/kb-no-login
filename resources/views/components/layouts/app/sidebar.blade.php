@@ -23,7 +23,7 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     <flux:navlist.item  class="mt-4" icon="magnifying-glass" :href="route('search')" :current="request()->routeIs('search')" wire:navigate>{{ __('Search') }}</flux:navlist.item>
                     @can('canCreate')<flux:navlist.item class="mt-4" icon="plus-circle" :href="route('articles.create')" :current="request()->routeIs('articles.create')">{{ __('Create') }}</flux:navlist.item>@endcan
-                    <flux:navlist.item class="mt-4" icon="rectangle-group" :href="route('sections')" :current="request()->routeIs('sections')" wire:navigate>{{ __('Sections') }}</flux:navlist.item>
+                    <flux:navlist.item class="mt-4" icon="rectangle-group" :href="route('sections.index')" :current="request()->routeIs('sections.index')" wire:navigate>{{ __('Sections') }}</flux:navlist.item>
                     @can('isAdmin')<flux:navlist.item class="mt-4" icon="shield-check" :href="route('admin')" :current="request()->routeIs('admin')" wire:navigate>{{ __('Admin') }}</flux:navlist.item>@endcan
                     @can('canCreate')<flux:navlist.item class="mt-4" icon="document" :href="route('drafts')" :current="request()->routeIs('drafts')" wire:navigate>{{ __('My Drafts') }}</flux:navlist.item>@endcan
                     <flux:navlist.item class="mt-4" icon="chart-bar" :href="route('stats')" :current="request()->routeIs('stats')">{{ __('Stats') }}</flux:navlist.item>

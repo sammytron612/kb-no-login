@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 
-use App\Livewire\Sections;
+
 use App\Http\Controllers\AdminController;
 use App\Livewire\ArticleSearch;
 use App\Http\Controllers\DraftsController;
@@ -25,8 +25,9 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::middleware(['auth'])->group(function () {
+
+
     Route::get('search', ArticleSearch::class)->name('search');
-    Route::get('/sections', Sections::class)->name('sections');
     Route::get('/admin', [AdminController::class,'index'])->name('admin');
     Route::post('/upload-image', [\App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload');
     Route::get('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'show'])->name('articles.create');
@@ -44,7 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/approvals/{id}/approve', [\App\Http\Controllers\ApprovalsController::class, 'approve'])->name('approvals.approve');
     Route::post('/admin/approvals/{id}/reject', [\App\Http\Controllers\ApprovalsController::class, 'reject'])->name('approvals.reject');
     Route::delete('articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'destroy'])->name('articles.destroy');
-
+    Route::get('/sections', [\App\Http\Controllers\SectionsController::class, 'index'])->name('sections.index');
+    Route::post('/sections', [\App\Http\Controllers\SectionsController::class, 'store'])->name('sections.store');
 });
 //Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit')->middleware(['can:isAdmin'] || 'can:CanEditOrDelete');
 
