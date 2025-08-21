@@ -70,6 +70,62 @@
         pointer-events: none;
         z-index: -1;
     }
+
+        /* Section hierarchy styling */
+        .section-select option[data-level="0"] {
+            font-weight: 700;
+            color: #1f2937;
+            background-color: #f3f4f6;
+        }
+
+        .section-select option[data-level="1"] {
+            font-weight: 600;
+            color: #374151;
+            background-color: #f9fafb;
+        }
+
+        .section-select option[data-level="2"] {
+            font-weight: 500;
+            color: #4b5563;
+            background-color: #ffffff;
+        }
+
+        .section-select option[data-level="3"] {
+            font-weight: 400;
+            color: #6b7280;
+            background-color: #ffffff;
+        }
+
+        .section-select option[data-level="4"],
+        .section-select option[data-level="5"] {
+            font-weight: 300;
+            color: #9ca3af;
+            background-color: #ffffff;
+        }
+
+        /* Dark mode */
+        .dark .section-select option[data-level="0"] {
+            background-color: #374151;
+            color: #f9fafb;
+        }
+
+        .dark .section-select option[data-level="1"] {
+            background-color: #4b5563;
+            color: #e5e7eb;
+        }
+
+        .dark .section-select option[data-level="2"] {
+            background-color: #6b7280;
+            color: #d1d5db;
+        }
+
+        .dark .section-select option[data-level="3"],
+        .dark .section-select option[data-level="4"],
+        .dark .section-select option[data-level="5"] {
+            background-color: #9ca3af;
+            color: #f3f4f6;
+        }
+
 </style>
 
 <script>

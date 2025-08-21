@@ -12,7 +12,8 @@ class CreateArticleController extends Controller
 {
     public function show()
     {
-        return view('articles.create');
+        $sections = \App\Models\Section::all();
+        return view('articles.create', compact('sections'));
     }
 
     public function store(Request $request)
