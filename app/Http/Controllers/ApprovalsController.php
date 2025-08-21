@@ -21,8 +21,9 @@ class ApprovalsController extends Controller
 
     public function approve($id)
     {
+
         try {
-            $article = Article::with('author')->findOrFail($id);
+            $article = Article::with('authorUser')->findOrFail($id);
 
             // Update article status
             $article->approved = 1;
