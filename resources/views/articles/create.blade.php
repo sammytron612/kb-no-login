@@ -68,40 +68,12 @@
                             <label for="section" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                 Section <span class="text-red-500">*</span>
                             </label>
-                            <div class="relative">
-                                <select name="section" id="section"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-zinc-700 dark:text-white transition-all duration-200">
-                                    <option value="">📁 Select a section...</option>
-                                    @php
-                                        function displaySectionOption($section, $level = 0) {
-                                            $indent = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $level);
-                                            $icon = $level == 0 ? '📁' : ($level == 1 ? '📂' : '📄');
-                                            return "{$indent}{$icon} {$section->section}";
-                                        }
-                                    @endphp
-                                    @foreach($sections as $section)
-                                        <option value="{{ $section->id }}"
-                                                @if(old('section') == $section->id) selected @endif
-                                                data-level="{{ $section->level ?? 0 }}"
-                                                data-path="{{ $section->full_path ?? $section->section }}">
-                                            {!! displaySectionOption($section, $section->level ?? 0) !!}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center">
-                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"></path>
-                                </svg>
-                                📁 Main Category → 📂 Subcategory → 📄 Article Section
-                            </p>
-                            @error('section') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                            <livewire:section-selector
+                                name="section"
+                                :selected="old('section')"
+                                :required="true"
+                                placeholder="Search or select a section..."
+                            />
                         </div>
 
                         <!-- Tags -->

@@ -64,7 +64,7 @@ class EditArticleController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'tags' => 'nullable|string',
-            'sectionid' => 'required|integer',
+            'sectionId' => 'required|integer',
             'scope' => 'required',
             'attachments.*' => 'file|max:10240',
             'published' => 'required',
@@ -77,7 +77,7 @@ class EditArticleController extends Controller
 
         $article->title = $validated['title'];
         $article->tags = $validated['tags'];
-        $article->sectionid = $validated['sectionid'];
+        $article->sectionid = $validated['sectionId'];
         $article->scope = $validated['scope'];
         $article->published = $validated['published'];
         if($request->published) {

@@ -8,6 +8,9 @@ use Livewire\Volt\Volt;
 use App\Http\Controllers\AdminController;
 use App\Livewire\ArticleSearch;
 use App\Http\Controllers\DraftsController;
+use App\Http\Controllers\EmailController;
+
+
 
 Route::get('/', function () {
     return view('welcome');

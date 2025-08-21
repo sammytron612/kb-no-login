@@ -60,6 +60,22 @@ class User extends Authenticatable
             ->implode('');
     }
 
+    /**
+     * Get all users except the current user
+     */
+    public function otherUsers()
+    {
+        return User::where('id', '!=', $this->id)->get();
+    }
+    /**
+     * Scope to exclude current user
+     */
+    public function scopeExceptCurrent($query, $userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+        return $query->where('id', '!=', $userId);
+    }
+
     public function articles()
     {
         return $this->hasMany(\App\Models\Article::class, 'author');
