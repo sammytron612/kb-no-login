@@ -3,4 +3,5 @@
     <rect x="2" y="2" width="36" height="36" rx="8" fill="#2563eb"/>
     <text x="50%" y="54%" text-anchor="middle" fill="white" font-size="18" font-family="Arial, Helvetica, sans-serif" font-weight="bold" dy=".3em">KB</text>
   </svg>
+  lklklk
 </div>
