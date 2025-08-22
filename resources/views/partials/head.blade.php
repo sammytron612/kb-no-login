@@ -25,6 +25,11 @@
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+<style>
+    .article-content {
+  @apply prose dark:prose-invert max-w-none;
+}
+</style>
 
 <script>
 // Global TinyMCE resize handler

@@ -2,7 +2,7 @@
 
     <!-- Results Section -->
     @if($articles)
-        <div class="grid gap-6 lg:gap-8">
+        <div class="grid gap-6 lg:gap-8 py-4">
             @foreach ($articles as $article)
                 <div class="bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-lg hover:shadow-xl rounded-xl p-6 transition-all duration-300 hover:scale-[1.02] group">
                     <!-- Article Header -->
@@ -52,13 +52,14 @@
                     </div>
 
                     <!-- Article Excerpt -->
-                    @if($article->body && $article->body->body)
-                        <div class="mb-4">
-                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                                {{ Str::limit(strip_tags($article->body->body), 200) }}
-                            </p>
-                        </div>
-                    @endif
+                    @php $body = Str::limit(strip_tags($article->body->body), 150); @endphp
+                    <div class="mb-4">
+                        <dov class="text-xs font-bold">Article excerpt:</dov>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed prose dark:prose-invert">
+                            {!! $body !!}....
+                        </p>
+                    </div>
+
 
                     <!-- Article Metadata -->
                     <div class="flex flex-wrap items-center gap-6 pt-4 border-t border-gray-100 dark:border-zinc-700">

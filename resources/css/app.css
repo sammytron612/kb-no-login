@@ -100,3 +100,30 @@ select:focus[data-flux-control] {
   font-size: revert;
   font-weight: revert;
 }
+
+/* Optional: Add custom prose styles */
+@layer components {
+    .prose {
+        @apply max-w-none;
+    }
+
+    .prose ul {
+        @apply list-disc ml-6 mb-4;
+    }
+
+    .prose ol {
+        @apply list-decimal ml-6 mb-4;
+    }
+
+    .prose li {
+        @apply mb-2;
+    }
+
+    .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+        @apply font-bold mb-4 mt-6;
+    }
+
+    .prose p {
+        @apply mb-4;
+    }
+}

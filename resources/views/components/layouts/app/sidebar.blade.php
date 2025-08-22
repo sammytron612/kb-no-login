@@ -53,10 +53,12 @@
                 <span class="text-sm">Create</span>
             </a>
             @endcan
+            @can('canCreate')
             <a href="{{ route('sections.index') }}" class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-900 dark:text-white" wire:navigate>
                 <flux:icon.archive-box class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                 <span class="text-sm">Sections</span>
             </a>
+            @endcan
             @can('isAdmin')
             <a href="{{ route('admin') }}" class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-900 dark:text-white" wire:navigate>
                 <flux:icon.cog-6-tooth class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />

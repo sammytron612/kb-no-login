@@ -114,8 +114,8 @@
             </div>
         @endif
 
-        <div class="w-full border p-6 rounded-lg border-slate-300 bg-white dark:bg-zinc-900 prose dark:prose-invert max-w-none mb-6 whitespace-pre-line shadow-sm">
-            {!! $article->body ? $article->body->body : '' !!}
+        <div class="w-full border p-6 rounded-lg border-slate-300 bg-white dark:bg-zinc-900 prose dark:prose-invert max-w-none mb-6 shadow-sm">
+            {!! $article->body->body !!}
         </div>
 
     </div>
