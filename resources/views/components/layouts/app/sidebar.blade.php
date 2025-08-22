@@ -76,6 +76,13 @@
                     </form>
                 </flux:menu>
             </flux:dropdown>
+            <!-- Credit Text -->
+            <div class="text-xs text-zinc-500 dark:text-zinc-400 text-center px-4 py-2 mt-2">
+                <p>
+                    Designed and coded by
+                </p>
+                <p>Kevin Wilson 2025</p>
+            </div>
         </flux:sidebar>
 
         <!-- Mobile User Menu -->

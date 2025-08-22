@@ -12,9 +12,7 @@ use App\Http\Controllers\EmailController;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+
 
 Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -29,30 +27,30 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
 
+    Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('home');;
 
-    Route::get('/admin/invites', [\App\Http\Controllers\InviteController::class, 'index'])->name('admin.invites');
-    Route::post('/admin/invites/send', [\App\Http\Controllers\InviteController::class, 'send'])->name('admin.invites.send');
-
+    Route::get('/admin/invites', [\App\Http\Controllers\InviteController::class, 'index'])->name('admin.invites')->middleware('can:isAdmin');
+    Route::post('/admin/invites/send', [\App\Http\Controllers\InviteController::class, 'send'])->name('admin.invites.send')->middleware('can:isAdmin');
     Route::get('search', ArticleSearch::class)->name('search');
     Route::get('/admin', [AdminController::class,'index'])->name('admin');
-    Route::post('/upload-image', [\App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload');
-    Route::get('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'show'])->name('articles.create');
-    Route::post('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'store'])->name('articles.store');
-    Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit');
-    Route::put('articles/{id}', [\App\Http\Controllers\EditArticleController::class, 'update'])->name('articles.update');
+    Route::post('/upload-image', [\App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload')->middleware('can:isAdmin');
+    Route::get('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'show'])->name('articles.create')->middleware('can:canCreate');
+    Route::post('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'store'])->name('articles.store')->middleware('can:canCreate');
+    Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit')->middleware('can:canEditOrDelete');
+    Route::put('articles/{id}', [\App\Http\Controllers\EditArticleController::class, 'update'])->name('articles.update')->middleware('can:canEditOrDelete');
     Route::get('/articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'show'])->name('articles.show');
     Route::get('/drafts', [DraftsController::class, 'index'])->name('drafts');
     Route::get('/stats', [\App\Http\Controllers\StatsController::class, 'index'])->name('stats');
-    Route::get('/admin/invites', [\App\Http\Controllers\AdminController::class, 'invites'])->name('admin.invites');
-    Route::get('/admin/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('admin.users');
-    Route::get('/admin/approvals', [\App\Http\Controllers\AdminController::class, 'approvals'])->name('admin.approvals');
-    Route::get('/admin/notifications', [\App\Http\Controllers\AdminController::class, 'settings'])->name('admin.settings');
-    Route::get('/admin/approvals/{id}', [\App\Http\Controllers\ApprovalsController::class, 'index'])->name('approvals.show');
-    Route::post('/admin/approvals/{id}/approve', [\App\Http\Controllers\ApprovalsController::class, 'approve'])->name('approvals.approve');
-    Route::post('/admin/approvals/{id}/reject', [\App\Http\Controllers\ApprovalsController::class, 'reject'])->name('approvals.reject');
-    Route::delete('articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'destroy'])->name('articles.destroy');
-    Route::get('/sections', [\App\Http\Controllers\SectionsController::class, 'index'])->name('sections.index');
-    Route::post('/sections', [\App\Http\Controllers\SectionsController::class, 'store'])->name('sections.store');
+    Route::get('/admin/invites', [\App\Http\Controllers\AdminController::class, 'invites'])->name('admin.invites')->middleware('can:isAdmin');
+    Route::get('/admin/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('admin.users')->middleware('can:isAdmin');
+    Route::get('/admin/approvals', [\App\Http\Controllers\AdminController::class, 'approvals'])->name('admin.approvals')->middleware('can:isAdmin');
+    Route::get('/admin/notifications', [\App\Http\Controllers\AdminController::class, 'settings'])->name('admin.settings')->middleware('can:isAdmin');
+    Route::get('/admin/approvals/{id}', [\App\Http\Controllers\ApprovalsController::class, 'index'])->name('approvals.show')->middleware('can:isAdmin');
+    Route::post('/admin/approvals/{id}/approve', [\App\Http\Controllers\ApprovalsController::class, 'approve'])->name('approvals.approve')->middleware('can:isAdmin');
+    Route::post('/admin/approvals/{id}/reject', [\App\Http\Controllers\ApprovalsController::class, 'reject'])->name('approvals.reject')->middleware('can:isAdmin');
+    Route::delete('articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'destroy'])->name('articles.destroy')->middleware('can:canEditOrDelete');
+    Route::get('/sections', [\App\Http\Controllers\SectionsController::class, 'index'])->name('sections.index')->middleware('can:canCreate');
+    Route::post('/sections', [\App\Http\Controllers\SectionsController::class, 'store'])->name('sections.store')->middleware('can:canCreate');
 });
 //Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit')->middleware(['can:isAdmin'] || 'can:CanEditOrDelete');
 
