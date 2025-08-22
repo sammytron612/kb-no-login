@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use App\Models\Invitation;
 
 new #[Layout('components.layouts.auth')] class extends Component {
     public string $name = '';
@@ -21,9 +22,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class, 'exists:' . Invitation::class . ',email'],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        $hasInvite = Invitation::where('email', $validated['email'])->first();
 
         $validated['password'] = Hash::make($validated['password']);
 

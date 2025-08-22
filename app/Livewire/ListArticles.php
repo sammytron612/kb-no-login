@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Article;
+use \Illuminate\Support\Facades\URL;
+
 
 class ListArticles extends Component
 {
@@ -12,6 +14,7 @@ class ListArticles extends Component
 
     public function render()
     {
+       // echo(URL::temporarySignedRoute('register', now()->addHours(24)));
         $articles = Article::where(function ($q) {
                     $q->whereNull('expires')
                     ->orWhere('expires', '>', now());

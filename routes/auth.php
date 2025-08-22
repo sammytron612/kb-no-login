@@ -9,6 +9,7 @@ Route::middleware('guest')->group(function () {
         ->name('login');
 
     Volt::route('register', 'auth.register')
+        ->middleware('signed.url')
         ->name('register');
 
     Volt::route('forgot-password', 'auth.forgot-password')

@@ -30,6 +30,9 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
 
 
+    Route::get('/admin/invites', [\App\Http\Controllers\InviteController::class, 'index'])->name('admin.invites');
+    Route::post('/admin/invites/send', [\App\Http\Controllers\InviteController::class, 'send'])->name('admin.invites.send');
+
     Route::get('search', ArticleSearch::class)->name('search');
     Route::get('/admin', [AdminController::class,'index'])->name('admin');
     Route::post('/upload-image', [\App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload');
