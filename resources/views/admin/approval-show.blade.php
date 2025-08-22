@@ -1,4 +1,4 @@
-<x-layouts.app :title="__('Review Article')">
+<x-layouts.app.main :title="__('Review Article')">
     <div class="max-w-6xl mx-auto py-8 px-4">
         <!-- Header Section with Navigation -->
         <div class="flex items-center justify-between mb-6">
@@ -229,4 +229,4 @@
             </span>
         </div>
     </div>
-</x-layouts.app>
+</x-layouts.app.main>

@@ -1,4 +1,4 @@
-<x-layouts.app :title="__('Create Article')">
+<x-layouts.app.main :title="__('Create Article')">
     <div class="max-w-6xl mx-auto py-8 px-4">
         <!-- Header Section -->
         <div class="text-center mb-8">
@@ -303,4 +303,4 @@
     </script>
 
 
-</x-layouts.app>
+</x-layouts.app.main>

@@ -1,5 +1,5 @@
 <!-- filepath: c:\Users\Kevin\kb-new\resources\views\dashboard.blade.php -->
-<x-layouts.app :title="__('Dashboard')">
+<x-layouts.app.main :title="__('Dashboard')">
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
         <!-- Subtle Background Elements -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30">

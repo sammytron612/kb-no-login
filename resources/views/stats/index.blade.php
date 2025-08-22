@@ -1,5 +1,5 @@
 <!-- filepath: c:\Users\Kevin\kb-new\resources\views\stats\index.blade.php -->
-<x-layouts.app :title="__('Site Statistics')">
+<x-layouts.app.main :title="__('Site Statistics')">
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
         <!-- Subtle Background Elements -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
@@ -72,7 +72,7 @@
                         </div>
                         <div class="ml-4 flex-1">
                             @if($mostViewedArticle)
-                                <div class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                <div class="text-sm font-medium text-gray-900 dark:text-white truncate text-wrap">
                                     {{ $mostViewedArticle->title }}
                                 </div>
                                 <div class="text-sm text-gray-600 dark:text-gray-400">

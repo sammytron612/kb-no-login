@@ -1,5 +1,5 @@
 <!-- filepath: c:\Users\Kevin\kb-new\resources\views\admin\invites.blade.php -->
-<x-layouts.app :title="__('Send Invitations')">
+<x-layouts.app.main :title="__('Send Invitations')">
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
         <!-- Subtle Background Elements -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
@@ -216,4 +216,4 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-layouts.app.main>

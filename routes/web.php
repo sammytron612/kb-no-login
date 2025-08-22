@@ -36,9 +36,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload-image', [\App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload')->middleware('can:isAdmin');
     Route::get('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'show'])->name('articles.create')->middleware('can:canCreate');
     Route::post('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'store'])->name('articles.store')->middleware('can:canCreate');
-    Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit')->middleware('can:canEditOrDelete');
-    Route::put('articles/{id}', [\App\Http\Controllers\EditArticleController::class, 'update'])->name('articles.update')->middleware('can:canEditOrDelete');
+    Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit');
+    Route::put('articles/{id}', [\App\Http\Controllers\EditArticleController::class, 'update'])->name('articles.update');
     Route::get('/articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'show'])->name('articles.show');
+    Route::get('articles/{article}/download-attachments', [\App\Http\Controllers\ArticlesController::class, 'downloadAttachments'])->name('articles.download-attachments');
     Route::get('/drafts', [DraftsController::class, 'index'])->name('drafts');
     Route::get('/stats', [\App\Http\Controllers\StatsController::class, 'index'])->name('stats');
     Route::get('/admin/invites', [\App\Http\Controllers\AdminController::class, 'invites'])->name('admin.invites')->middleware('can:isAdmin');
@@ -48,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/approvals/{id}', [\App\Http\Controllers\ApprovalsController::class, 'index'])->name('approvals.show')->middleware('can:isAdmin');
     Route::post('/admin/approvals/{id}/approve', [\App\Http\Controllers\ApprovalsController::class, 'approve'])->name('approvals.approve')->middleware('can:isAdmin');
     Route::post('/admin/approvals/{id}/reject', [\App\Http\Controllers\ApprovalsController::class, 'reject'])->name('approvals.reject')->middleware('can:isAdmin');
-    Route::delete('articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'destroy'])->name('articles.destroy')->middleware('can:canEditOrDelete');
+    Route::delete('articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'destroy'])->name('articles.destroy');
     Route::get('/sections', [\App\Http\Controllers\SectionsController::class, 'index'])->name('sections.index')->middleware('can:canCreate');
     Route::post('/sections', [\App\Http\Controllers\SectionsController::class, 'store'])->name('sections.store')->middleware('can:canCreate');
 });

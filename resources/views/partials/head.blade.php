@@ -26,7 +26,6 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 
-
 <script>
 // Global TinyMCE resize handler
 window.handleTinyMCEResize = function() {

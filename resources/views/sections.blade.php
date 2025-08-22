@@ -1,9 +1,15 @@
-<x-layouts.app :title="__('Sections Management')">
+<x-layouts.app.main :title="__('Sections Management')">
    <div class="container mx-auto py-8 px-4">
     <!-- Header Section -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Sections Management</h1>
-        <p class="text-gray-600 dark:text-gray-300">Organize your knowledge base with hierarchical sections</p>
+    <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
+            <svg class="w-8 h-8 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-3">Sections Management</h1>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Organize your knowledge base with hierarchical sections</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">

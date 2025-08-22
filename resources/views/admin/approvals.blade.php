@@ -1,4 +1,4 @@
-<x-layouts.app :title="__('Article Approvals')">
+<x-layouts.app.main :title="__('Article Approvals')">
     <div class="max-w-6xl mx-auto py-8 px-4">
         <!-- Header Section -->
         <div class="text-center mb-8">
@@ -208,4 +208,4 @@
             @endforelse
         </div>
     </div>
-</x-layouts.app>
+</x-layouts.app.main>

@@ -1,4 +1,4 @@
-<x-layouts.app :title="__('My Drafts')">
+<x-layouts.app.main :title="__('My Drafts')">
     <div class="max-w-6xl mx-auto py-8 px-4">
         <!-- Header Section -->
         <div class="text-center mb-8">

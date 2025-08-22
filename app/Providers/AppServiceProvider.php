@@ -24,19 +24,19 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        Gate::define('isAdmin', function($user) {
+        Gate::define('isAdmin', function(User $user) {
             return $user->role === 1;
             });
-        Gate::define('isEditor', function($user) {
+        Gate::define('isEditor', function(User $user) {
             return $user->role === 2;
             });
-        Gate::define('isViewer', function($user) {
+        Gate::define('isViewer', function(User $user) {
             return $user->role === 3;
             });
-        Gate::define('canCreate', function($user) {
+        Gate::define('canCreate', function(User $user) {
             return ($user->role === 1 || $user->role === 2);
             });
-        Gate::define('canEditOrDelete', function($user, $article) {
+        Gate::define('canEditOrDelete', function(User $user, Article $article) {
             return ($user->role === 1 || $user->id === $article->author);
             });
     }
