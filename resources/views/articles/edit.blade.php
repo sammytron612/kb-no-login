@@ -228,7 +228,7 @@
     </div>
 
     <!-- TinyMCE Scripts -->
-    <script src="https://cdn.tiny.cloud/1/qpuriefs0vhoo7azs8ty9kf1lyz69bininv5bq6grbpqpbh7/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/{{ config('services.tinymce.api_key') }}/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         let tinymceObserver = null;
         let isInitialized = false;
@@ -239,7 +239,7 @@
             const isMobile = window.innerWidth <= 768;
 
             tinymce.init({
-                licence_key: 'qpuriefs0vhoo7azs8ty9kf1lyz69bininv5bq6grbpqpbh7',
+                licence_key: '{{ config('services.tinymce.api_key') }}',
                 selector: '#editor',
                 height: 400,
                 width: '100%',

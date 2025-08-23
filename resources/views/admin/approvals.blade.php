@@ -197,12 +197,12 @@
                     <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
                         There are no articles waiting for approval at the moment. All submissions have been reviewed.
                     </p>
-                    <a href="{{ route('dashboard') }}"
+                    <a href="{{ route('admin') }}"
                        class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                         </svg>
-                        Back to Dashboard
+                        Back to Admin
                     </a>
                 </div>
             @endforelse

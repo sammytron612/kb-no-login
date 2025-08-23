@@ -193,7 +193,7 @@
 
 
     <!-- TinyMCE Scripts -->
-    <script src="https://cdn.tiny.cloud/1/d3utf658spf5n1oft4rjl6x85g568jj7ourhvo2uhs578jt9/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/{{ config('services.tinymce.api_key') }}/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         let isInitialized = false;
         let resizeTimer = null;
@@ -204,7 +204,7 @@
             const isMobile = window.innerWidth <= 768;
 
             tinymce.init({
-                licence_key: 'qpuriefs0vhoo7azs8ty9kf1lyz69bininv5bq6grbpqpbh7',
+                licence_key: '{{ config('services.tinymce.api_key') }}',
                 selector: '#editor',
                 height: 400,
                 width: '100%',
