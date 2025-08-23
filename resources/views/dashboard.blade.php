@@ -177,15 +177,6 @@
                                 <p class="text-sm text-gray-600 dark:text-gray-400">Latest content updates</p>
                             </div>
                         </div>
-
-                        <a href="/articles"
-                           class="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors duration-200"
-                           wire:navigate>
-                            <span>View All</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
                     </div>
                 </div>
 

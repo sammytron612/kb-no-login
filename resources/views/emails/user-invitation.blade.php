@@ -1,4 +1,3 @@
-<!-- filepath: c:\Users\Kevin\kb-new\resources\views\emails\user-invitation.blade.php -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,20 +29,20 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎉 You're Invited!</h1>
+            <h1>You're Invited!</h1>
             <p>Join our Knowledge Base community</p>
         </div>
 
         <div class="content">
             <div class="greeting">
-                Hello{{ $userName ? ' ' . $userName : '' }}! 👋
+                Hello{{ $userName ? ' ' . $userName : '' }}!
             </div>
 
             <p><strong>{{ $sender->name }}</strong> has invited you to join our Knowledge Base platform where you can access valuable resources, contribute articles, and collaborate with the team.</p>
 
             @if($personalMessage)
                 <div class="message-box">
-                    <h4 style="margin: 0 0 10px 0; color: #374151;">💬 Personal Message:</h4>
+                    <h4 style="margin: 0 0 10px 0; color: #374151;">Personal Message:</h4>
                     <p style="margin: 0; color: #4b5563; font-style: italic;">"{{ $personalMessage }}"</p>
                 </div>
             @endif
@@ -52,31 +51,31 @@
 
             <div style="text-align: center; margin: 30px 0;">
                 <a href="{{ $registrationUrl }}" class="cta-button">
-                    🚀 Create My Account
+                    Create My Account
                 </a>
             </div>
 
             <div class="info-grid">
                 <div class="info-item">
-                    <h4>🔐 Secure Access</h4>
+                    <h4>Secure Access</h4>
                     <p>Your invitation is cryptographically signed and secure</p>
                 </div>
                 <div class="info-item">
-                    <h4>⏰ Valid for 24 Hours</h4>
+                    <h4>Valid for 24 Hours</h4>
                     <p>This invitation expires on {{ now()->addHours(24)->format('M j, Y \a\t g:i A') }}</p>
                 </div>
                 <div class="info-item">
-                    <h4>📚 Knowledge Base</h4>
+                    <h4>Knowledge Base</h4>
                     <p>Access articles, tutorials, and team resources</p>
                 </div>
                 <div class="info-item">
-                    <h4>🤝 Collaborate</h4>
+                    <h4>Collaborate</h4>
                     <p>Contribute your knowledge and help others</p>
                 </div>
             </div>
 
             <div class="security-note">
-                <h4>🔒 Security Notice</h4>
+                <h4>Security Notice</h4>
                 <p>This invitation link is unique to you and expires in 24 hours. If you didn't expect this invitation or have security concerns, please contact our support team.</p>
             </div>
 

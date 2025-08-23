@@ -1,12 +1,7 @@
-<x-layouts.app.main>
+<x-layouts.app.external>
 <div class="container mx-auto py-8">
     <div class="flex items-center justify-between mb-4">
         <h1 class="text-2xl font-bold text-zinc-900 dark:text-white ml-6">View article</h1>
-
-        @if($article->scope)
-        <livewire:email-article :article="$article" />
-        @endif
-
     </div>
     <div class="bg-gradient-to-br from-white via-slate-100 to-slate-200 dark:from-zinc-800 dark:via-zinc-900 dark:to-zinc-800 rounded-xl shadow-lg p-8">
         <h2 class="text-2xl font-extrabold text-blue-600 dark:text-blue-400 mb-2">{{ $article->title }}</h2>
@@ -27,15 +22,6 @@
         </div>
         <div class="mb-4 flex items-center justify-between">
             <div><span class="font-semibold">Section</span> - <a href="#" class="text-blue-500 underline font-semibold">{{ $article->section ? $article->section->section : '' }}</a></div>
-            <div class="mt-4 gap-4 flex">
-                @can('canEditOrDelete', $article)
-                    <a href="{{ route('articles.edit', $article->id) }}" class="bg-blue-400 text-white px-4 py-1 text-sm rounded hover:bg-blue-600">Edit</a>
-                @endcan
-                <a href="#" class="bg-slate-300 text-zinc-700 px-4 py-1 text-sm  rounded hover:bg-slate-500 transition">Print</a>
-                @can('canEditOrDelete', $article)
-                    <a href="#" class="bg-red-800 text-red-100 hover:text-red-100 px-4 py-1 text-sm  rounded hover:bg-red-700 transition">Delete</a>
-                @endcan
-            </div>
         </div>
 
         <!-- Attachments Section -->
@@ -124,10 +110,4 @@
 
     </div>
 </div>
-<div class="mt-8">
-    <livewire:article-feedback :article="$article" />
-</div>
-<div class="mt-8">
-    <livewire:article-latest-comments :article="$article" />
-</div>
-</x-layouts.app.main>
+</x-layouts.app.external>

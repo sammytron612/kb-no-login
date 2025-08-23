@@ -1,4 +1,3 @@
-<!-- filepath: c:\Users\Kevin\kb-new\resources\views\emails\article-rejected.blade.php -->
 @php
     use Illuminate\Support\Str;
 @endphp
@@ -22,7 +21,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📝 Article Needs Attention</h1>
+            <h1>Article Needs Attention</h1>
             <p>Your article submission requires some updates before publication</p>
         </div>
 
@@ -35,9 +34,9 @@
                 <h2 style="margin-top: 0; color: #333;">{{ $article->title }}</h2>
 
                 <div class="meta">
-                    <p><strong>📁 Section:</strong> {{ $article->section ? $article->section->section : 'No section' }}</p>
-                    <p><strong>📅 Submitted:</strong> {{ $article->created_at->format('M j, Y \a\t g:i A') }}</p>
-                    <p><strong>🏷️ KB ID:</strong> {{ $article->kb }}</p>
+                    <p><strong>Section:</strong> {{ $article->section ? $article->section->section : 'No section' }}</p>
+                    <p><strong>Submitted:</strong> {{ $article->created_at->format('M j, Y \a\t g:i A') }}</p>
+                    <p><strong>KB ID:</strong> {{ $article->kb }}</p>
                 </div>
             </div>
 

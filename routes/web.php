@@ -52,8 +52,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'destroy'])->name('articles.destroy');
     Route::get('/sections', [\App\Http\Controllers\SectionsController::class, 'index'])->name('sections.index')->middleware('can:canCreate');
     Route::post('/sections', [\App\Http\Controllers\SectionsController::class, 'store'])->name('sections.store')->middleware('can:canCreate');
+
 });
 //Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit')->middleware(['can:isAdmin'] || 'can:CanEditOrDelete');
+Route::get('/articles/{article}/shared', [\App\Http\Controllers\ArticlesController::class, 'shared'])
+    ->name('articles.shared')
+    ->middleware('signed');
+
 
 Route::get('/api/articles/most-viewed', [\App\Http\Controllers\Api\ArticleStatsController::class, 'mostViewed']);
 

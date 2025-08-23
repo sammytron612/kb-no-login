@@ -1,4 +1,3 @@
-<!-- filepath: c:\Users\Kevin\kb-new\resources\views\emails\article-approved.blade.php -->
 @php
     use Illuminate\Support\Str;
 @endphp
@@ -22,8 +21,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎉 Article Approved!</h1>
-            <p>Congratulations! Your article has been approved and published</p>
+            <h1>Article Approved!</h1>
+            <p>Your article has been approved and published</p>
         </div>
 
         <div class="content">
@@ -35,12 +34,12 @@
                 <h2 style="margin-top: 0; color: #333;">{{ $article->title }}</h2>
 
                 <div class="meta">
-                    <p><strong>📁 Section:</strong> {{ $article->section ? $article->section->section : 'No section' }}</p>
-                    <p><strong>📅 Approved:</strong> {{ now()->format('M j, Y \a\t g:i A') }}</p>
-                    <p><strong>🏷️ KB ID:</strong> {{ $article->kb }}</p>
+                    <p><strong>Section:</strong> {{ $article->section ? $article->section->section : 'No section' }}</p>
+                    <p><strong>Approved:</strong> {{ now()->format('M j, Y \a\t g:i A') }}</p>
+                    <p><strong>KB ID:</strong> {{ $article->kb }}</p>
 
                     @if($article->tags && count($article->tags) > 0)
-                        <p><strong>🏷️ Tags:</strong> {{ implode(', ', $article->tags) }}</p>
+                        <p><strong>Tags:</strong> {{ implode(', ', $article->tags) }}</p>
                     @endif
                 </div>
             </div>
@@ -48,7 +47,7 @@
             <p>Your article is now live and accessible to all users. Thank you for contributing to our knowledge base!</p>
 
             <div style="text-align: center;">
-                <a href="{{ $articleUrl }}" class="button">📖 View Published Article</a>
+                <a href="{{ $articleUrl }}" class="button">View Published Article</a>
             </div>
 
             <p style="margin-top: 30px;">Best regards,<br>Knowledge Base Admin Team</p>
