@@ -17,9 +17,6 @@ class AdminController extends Controller
     public function invites() {
         return view('admin.invites');
     }
-    public function users() {
-        return view('admin.users');
-    }
     public function approvals() {
         $articles = Article::where('approved', 0)->get();
         return view('admin.approvals', compact('articles'));
