@@ -183,7 +183,7 @@
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No drafts found</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-                        You haven't created any draft articles yet. Start writing your first article to see it here.
+                        You do nothave any draft articles.
                     </p>
                     <a href="{{ route('articles.create') }}"
                        class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">

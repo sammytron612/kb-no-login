@@ -45,7 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/invites', [\App\Http\Controllers\AdminController::class, 'invites'])->name('admin.invites')->middleware('can:isAdmin');
     Route::get('/admin/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('admin.users')->middleware('can:isAdmin');
     Route::get('/admin/approvals', [\App\Http\Controllers\AdminController::class, 'approvals'])->name('admin.approvals')->middleware('can:isAdmin');
-    Route::get('/admin/notifications', [\App\Http\Controllers\AdminController::class, 'settings'])->name('admin.settings')->middleware('can:isAdmin');
+    Route::get('/admin/settings', [\App\Http\Controllers\SettingsController::class, 'index'])->name('admin.settings')->middleware('can:isAdmin');
     Route::get('/admin/approvals/{id}', [\App\Http\Controllers\ApprovalsController::class, 'index'])->name('approvals.show')->middleware('can:isAdmin');
     Route::post('/admin/approvals/{id}/approve', [\App\Http\Controllers\ApprovalsController::class, 'approve'])->name('approvals.approve')->middleware('can:isAdmin');
     Route::post('/admin/approvals/{id}/reject', [\App\Http\Controllers\ApprovalsController::class, 'reject'])->name('approvals.reject')->middleware('can:isAdmin');
