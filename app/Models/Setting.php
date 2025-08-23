@@ -29,7 +29,7 @@ class Setting extends Model
     protected $casts = [
         'invites' => 'boolean',
         'full_text' => 'boolean',
-        'editors' => 'integer',
+        'editors' => 'boolean',
     ];
 
     /**

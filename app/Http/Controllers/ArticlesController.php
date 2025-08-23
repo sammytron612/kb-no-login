@@ -18,7 +18,8 @@ class ArticlesController extends Controller
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
-        if (! Gate::allows('canEditOrDelete', $article)) {
+
+        if (! Gate::allows('canDelete', $article)) {
             abort(403);
         }
 

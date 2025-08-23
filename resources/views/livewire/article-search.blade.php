@@ -61,7 +61,7 @@
                         </div>
 
                         <!-- Action Buttons -->
-                        @can('canEditOrDelete', $article)
+                        @can('canEdit', $article)
                             <div class="flex gap-2 ml-4">
                                 <a href="{{ route('articles.edit', $article->id) }}"
                                    class="inline-flex items-center px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 hover:scale-105 hover:shadow-lg transition-all duration-200 text-sm font-medium">
@@ -70,7 +70,7 @@
                                     </svg>
                                     Edit
                                 </a>
-                                @can('isAdmin')
+                                @can('canDelete', $article)
                                 <form action="{{ route('articles.destroy', $article->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this article?');">
                                     @csrf
                                     @method('DELETE')

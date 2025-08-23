@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('invites')->default(false);
             $table->boolean('full_text')->default(true);
-            $table->integer('editors')->default(1);
+            $table->boolean('editors')->default(false);
             $table->timestamps();
         });
     }

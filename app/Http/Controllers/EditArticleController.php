@@ -11,43 +11,32 @@ use Illuminate\Support\Facades\Gate;
 class EditArticleController extends Controller
 {
 
-    public function mount($id)
+    public function __construct($id)
     {
         $article = Article::findOrFail($id);
-        if (! Gate::allows('canEditOrDelete', $article)) {
-            abort(403);
-        }
+        if (! Gate::allows('canEdit', $article)) {
+            abort(403);}
     }
 
     public function edit($id)
     {
-
-        $article = Article::findOrFail($id);
-        if (! Gate::allows('canEditOrDelete', $article)) {
-            abort(403);}
-
         $sections = Section::all();
-
 
         return view('articles.edit', compact('article', 'sections'));
     }
 
     public function update(Request $request, $id)
     {
-
-
         $article = Article::findOrFail($id);
 
         if($request->hasFile('attachments')) {
 
             $attachCount = (count($request->attachments)) + count($article->attachments);
-
         }
         else
         {
             $attachCount = count($article->attachments);
         }
-
 
         if ($attachCount > 3) {
 
@@ -56,13 +45,10 @@ class EditArticleController extends Controller
 
         $attachmentPaths = $article->attachments;
 
-
         if ($request->hasFile('attachments')) {
 
             foreach ($request->file('attachments') as $file) {
                 $originalName = time() . "-" . $file->getClientOriginalName();
-
-
                 $path = $file->storeAs('attachments', $originalName, 'public');
                 $attachmentPaths[] = $path;
             }
