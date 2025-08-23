@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Article;
+use Illuminate\Support\Facades\Gate;
 
 class ArticlesController extends Controller
 {
@@ -19,15 +20,19 @@ class ArticlesController extends Controller
     {
         $article = Article::findOrFail($id);
 
+        // Debug logging
+        \Log::info('Delete attempt', [
+            'user_id' => auth()->id(),
+            'user_role' => auth()->user()->role,
+            'article_id' => $article->id,
+            'article_author' => $article->author,
+            'gate_allows' => Gate::allows('canDelete', $article)
+        ]);
+
         if (! Gate::allows('canDelete', $article)) {
-            abort(403);
+            abort(403, 'You are not authorized to delete this article.');
         }
 
-        $article = Article::findOrFail($id);
-
-        if (! \Gate::allows('canEditOrDelete', $article)) {
-            abort(403);
-        }
         // Delete attachments from storage
         if (!empty($article->attachments)) {
             foreach ($article->attachments as $attachment) {

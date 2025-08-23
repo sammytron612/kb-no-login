@@ -17,23 +17,43 @@
             <span class="flex items-center gap-1"><flux:icon.calendar /></i> <span class="font-semibold">{{ $article->created_at->diffForHumans() }}</span></span>
             <span class="bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded text-xs font-semibold uppercase">{{ $article->kb }}</span>
             <span class="font-semibold">Rating</span>
-            <span class="text-yellow-500">
-                @for ($i = 1; $i <= 5; $i++)
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="{{ $i <= round($article->rating) ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 inline">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.75l-6.172 3.245 1.179-6.88L2 9.755l6.904-1.002L12 2.25l3.096 6.503L22 9.755l-5.007 4.36 1.179 6.88z" />
-                    </svg>
-                @endfor
-            </span>
+            @if($article->rating)
+                <span class="text-yellow-500">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="{{ $i <= round($article->rating) ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 inline">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.75l-6.172 3.245 1.179-6.88L2 9.755l6.904-1.002L12 2.25l3.096 6.503L22 9.755l-5.007 4.36 1.179 6.88z" />
+                        </svg>
+                    @endfor
+                </span>
+            @else
+                <span class="text-gray-400">No rating yet</span>
+            @endif
         </div>
         <div class="mb-4 flex items-center justify-between">
             <div><span class="font-semibold">Section</span> - <a href="#" class="text-blue-500 underline font-semibold">{{ $article->section ? $article->section->section : '' }}</a></div>
             <div class="mt-4 gap-4 flex">
-                @can('canEditOrDelete', $article)
+                @can('canEdit', $article)
                     <a href="{{ route('articles.edit', $article->id) }}" class="bg-blue-400 text-white px-4 py-1 text-sm rounded hover:bg-blue-600">Edit</a>
                 @endcan
                 <a href="#" class="bg-slate-300 text-zinc-700 px-4 py-1 text-sm  rounded hover:bg-slate-500 transition">Print</a>
-                @can('canEditOrDelete', $article)
-                    <a href="#" class="bg-red-800 text-red-100 hover:text-red-100 px-4 py-1 text-sm  rounded hover:bg-red-700 transition">Delete</a>
+                                @can('canDelete', $article)
+                    <div x-data="{
+                        deleteArticle() {
+                            if (confirm('⚠️ Are you sure you want to delete this article?\n\nTitle: {{ addslashes($article->title) }}\n\nThis action cannot be undone!')) {
+                                document.getElementById('delete-form-{{ $article->id }}').submit();
+                            }
+                        }
+                    }">
+                        <form id="delete-form-{{ $article->id }}" action="{{ route('articles.destroy', $article->id) }}" method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+
+                        <button @click="deleteArticle()"
+                                class="bg-red-800 text-red-100 hover:cursor-pointer hover:text-red-100 px-4 py-1 text-sm rounded hover:bg-red-700 transition">
+                            Delete
+                        </button>
+                    </div>
                 @endcan
             </div>
         </div>
@@ -124,10 +144,12 @@
 
     </div>
 </div>
-<div class="mt-8">
-    <livewire:article-feedback :article="$article" />
-</div>
-<div class="mt-8">
-    <livewire:article-latest-comments :article="$article" />
+<div class="bg-gradient-to-br from-white via-slate-100 to-slate-200 dark:from-zinc-800 dark:via-zinc-900 dark:to-zinc-800 rounded-xl shadow-lg p-8">
+    <div class="mt-8">
+        <livewire:article-feedback :article="$article" />
+    </div>
+    <div class="mt-8">
+        <livewire:article-latest-comments :article="$article" />
+    </div>
 </div>
 </x-layouts.app.main>
