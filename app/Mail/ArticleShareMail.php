@@ -5,6 +5,8 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Article;
 use App\Models\User;
@@ -23,12 +25,29 @@ class ArticleShareMail extends Mailable
         $this->article = $article;
         $this->signedUrl = $signedUrl;
         $this->customMessage = $customMessage;
-        $this->sharedBy = $sharedBy;
+        $this->sharedBy = $sharedBy->name;
     }
 
-    public function build()
+    public function envelope(): Envelope
     {
-        return $this->subject('Knowledge Base Article: ' . $this->article->title)
-                    ->view('emails.article-share');
+        return new Envelope(
+            subject: 'New Knowledge Base Article: ' . $this->article->title,
+        );
     }
+
+    public function content(): Content
+    {
+        return new Content(
+            markdown: 'emails.article-share',
+            with: [
+                'article' => $this->article,
+                'user' => $this->sharedBy,
+                'signedUrl' => $this->signedUrl,
+                'message' => $this->customMessage,
+            ]
+
+        );
+    }
+
+
 }

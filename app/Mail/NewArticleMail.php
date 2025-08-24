@@ -8,26 +8,19 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Article;
-use App\Models\User;
 
-class NewArticleNotification extends Mailable implements ShouldQueue
+
+class NewArticleMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-
-    public $article;
-    public $user;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Article $article, User $user)
+    public function __construct($article,$user)
     {
         $this->article = $article;
         $this->user = $user;
-        // Configure queue settings
-        $this->onQueue('emails');
-        $this->delay(now()->addSeconds(5)); // Optional delay
     }
 
     /**
@@ -46,22 +39,14 @@ class NewArticleNotification extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'emails.new-article-notification',
+            markdown: 'emails.new-article-mail',
             with: [
                 'article' => $this->article,
                 'user' => $this->user,
                 'articleUrl' => route('articles.show', $this->article->id),
             ]
-        );
-    }
 
-    public function failed(\Throwable $exception): void
-    {
-        \Log::error('New article notification email failed', [
-            'article_id' => $this->article->id,
-            'author_id' => $this->author->id,
-            'error' => $exception->getMessage()
-        ]);
+        );
     }
 
     /**

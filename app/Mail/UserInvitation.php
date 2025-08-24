@@ -13,12 +13,12 @@ class UserInvitation extends Mailable
 {
     use Queueable, SerializesModels;
 
-    // Avoid conflicts with Laravel's built-in properties
+
     public string $userEmail;
     public ?string $userName;
     public ?string $personalMessage;
     public string $registrationUrl;
-    public User $sender;
+    public User $invitedBy;
 
     public function __construct(string $email, ?string $name, ?string $message, string $signedUrl, User $invitedBy)
     {
@@ -26,20 +26,26 @@ class UserInvitation extends Mailable
         $this->userName = $name;
         $this->personalMessage = $message;
         $this->registrationUrl = $signedUrl;
-        $this->sender = $invitedBy;
+        $this->sender = $invitedBy->name;
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '🎉 You\'re invited to join our Knowledge Base!',
+            subject: 'You are invited to join our Knowledge Base!',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'emails.user-invitation',
+            markdown: 'emails.user-invitation',
+            with: [
+                'user' => $this->userName,
+                'invitedBy' => $this->sender,
+                'message' => $this->personalMessage,
+                'registrationURL' => $this->registrationUrl
+            ]
         );
     }
 

@@ -1,61 +1,43 @@
-@php
-    use Illuminate\Support\Str;
-@endphp
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Article Approved</title>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
-        .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 8px 8px; }
-        .article-info { background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981; margin: 20px 0; }
-        .button { display: inline-block; background: #10b981; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-        .meta { color: #666; font-size: 14px; margin: 10px 0; }
-        .footer { text-align: center; color: #666; font-size: 12px; margin-top: 30px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Article Approved!</h1>
-            <p>Your article has been approved and published</p>
-        </div>
+{{-- filepath: resources/views/emails/article-approved.blade.php --}}
+<x-mail::message>
+# Your Article Has Been Approved!
 
-        <div class="content">
-            <p>Hello {{ $author->name }},</p>
+Hello **{{ $user->name }}**,
 
-            <p>Great news! Your article has been reviewed and <strong>approved</strong> for publication in the knowledge base.</p>
+Great news! Your article has been reviewed and **approved** by admin.
 
-            <div class="article-info">
-                <h2 style="margin-top: 0; color: #333;">{{ $article->title }}</h2>
+<x-mail::panel>
+## {{ $article->title }}
 
-                <div class="meta">
-                    <p><strong>Section:</strong> {{ $article->section ? $article->section->section : 'No section' }}</p>
-                    <p><strong>Approved:</strong> {{ now()->format('M j, Y \a\t g:i A') }}</p>
-                    <p><strong>KB ID:</strong> {{ $article->kb }}</p>
+**Status:** ✅ **Approved**
+**Author:** {{ $article->author_name ?? $user->name }}
+**Section:** {{ $article->section->name ?? $article->section ?? 'General' }}
+**Approved on:** {{ now()->format('M j, Y \a\t g:i A') }}
+**Article KB:** `{{ $article->kb }}
 
-                    @if($article->tags && count($article->tags) > 0)
-                        <p><strong>Tags:</strong> {{ implode(', ', $article->tags) }}</p>
-                    @endif
-                </div>
-            </div>
 
-            <p>Your article is now live and accessible to all users. Thank you for contributing to our knowledge base!</p>
+</x-mail::panel>
 
-            <div style="text-align: center;">
-                <a href="{{ $articleUrl }}" class="button">View Published Article</a>
-            </div>
+Your article is now **live** and accessible to all knowledge base users. Thank you for contributing valuable content to our knowledge base!
 
-            <p style="margin-top: 30px;">Best regards,<br>Knowledge Base Admin Team</p>
-        </div>
+<x-mail::button :url="$articleUrl" color="success">
+View Published Article
+</x-mail::button>
 
-        <div class="footer">
-            <p>Keep up the great work! Your contributions help make our knowledge base valuable for everyone.</p>
-        </div>
-    </div>
-</body>
-</html>
+## What's Next?
+
+- Your article is now searchable in the knowledge base
+- Other users can view, comment, and share your content
+- You'll receive notifications if users have questions or feedback
+
+
+Thank you for your contribution to the knowledge base!
+
+Best regards,<br>
+Admin
+
+<x-mail::subcopy>
+You're receiving this email because you authored an article that has been approved for publication.
+
+</x-mail::subcopy>
+</x-mail::message>

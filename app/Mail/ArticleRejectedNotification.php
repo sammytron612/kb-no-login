@@ -32,7 +32,7 @@ class ArticleRejectedNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '❌ Your article submission requires attention: ' . $this->article->title,
+            subject: 'Your article submission requires attention: ' . $this->article->title,
         );
     }
 
@@ -42,7 +42,7 @@ class ArticleRejectedNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.article-rejected',
+            markdown: 'emails.article-rejected',
             with: [
                 'article' => $this->article,
                 'author' => $this->author,

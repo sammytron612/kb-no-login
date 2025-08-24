@@ -42,7 +42,7 @@ class ArticleApprovedNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.article-approved',
+            markdown: 'emails.article-approved',
             with: [
                 'article' => $this->article,
                 'author' => $this->author,
