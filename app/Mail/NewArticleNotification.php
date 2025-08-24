@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Article;
 use App\Models\User;
 
-class NewArticleNotification extends Mailable
+class NewArticleNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -25,6 +25,9 @@ class NewArticleNotification extends Mailable
     {
         $this->article = $article;
         $this->user = $user;
+        // Configure queue settings
+        $this->onQueue('emails');
+        $this->delay(now()->addSeconds(5)); // Optional delay
     }
 
     /**
@@ -50,6 +53,15 @@ class NewArticleNotification extends Mailable
                 'articleUrl' => route('articles.show', $this->article->id),
             ]
         );
+    }
+
+    public function failed(\Throwable $exception): void
+    {
+        \Log::error('New article notification email failed', [
+            'article_id' => $this->article->id,
+            'author_id' => $this->author->id,
+            'error' => $exception->getMessage()
+        ]);
     }
 
     /**
