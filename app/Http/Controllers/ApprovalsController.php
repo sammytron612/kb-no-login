@@ -47,8 +47,10 @@ class ApprovalsController extends Controller
         }
     }
 
-    public function reject($id)
+    public function reject(Request $request, $id)
     {
+        $reason = $request->rejection_reason;
+
         try {
             $article = Article::findOrFail($id);
 
@@ -57,7 +59,7 @@ class ApprovalsController extends Controller
             $article->save();
 
             // Send rejection email to author
-            $this->sendRejectionEmail($article);
+            $this->sendRejectionEmail($article, $reason);
 
             return redirect()->route('admin.approvals')->with('success', 'Article rejected and author notified!');
 
@@ -103,7 +105,7 @@ class ApprovalsController extends Controller
         }
     }
 
-    private function sendRejectionEmail($article)
+    private function sendRejectionEmail($article, $reason)
     {
         try {
             // Get the author user
@@ -118,7 +120,7 @@ class ApprovalsController extends Controller
             }
 
             // Send rejection email
-            Mail::to($author->email)->send(new \App\Mail\ArticleRejectedNotification($article, $author));
+            Mail::to($author->email)->send(new \App\Mail\ArticleRejectedNotification($article, $author, $reason));
 
             Log::info('Rejection email sent successfully', [
                 'article_id' => $article->id,

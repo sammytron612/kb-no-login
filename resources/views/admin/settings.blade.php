@@ -108,6 +108,32 @@
             </div>
         </div>
 
+        <!-- Email Notification Setting -->
+        <div class="p-4 md:p-6">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Email Settings</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                        Enable or disable global email notifications(Note this does not effect Email Invites).
+                    </p>
+
+                    <div class="bg-teal-50 dark:bg-teal-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <flux:icon.envelope class="w-5 h-5 text-teal-600 dark:text-teal-400 mt-0.5 mr-3 flex-shrink-0" />
+                            <div class="text-sm text-teal-800 dark:text-teal-200 flex-1">
+                                <strong>Enabled:</strong> Global email notifications enabled<br>
+                                <strong>Disabled:</strong> Global email notifications disabled
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:ml-6 self-start">
+                    <livewire:admin.email-toggle />
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 </x-layouts.app.main>

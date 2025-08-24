@@ -1,5 +1,6 @@
+{{-- filepath: resources/views/admin/approval-show.blade.php --}}
 <x-layouts.app.main :title="__('Review Article')">
-    <div class="max-w-6xl mx-auto py-8 px-4">
+    <div class="max-w-6xl mx-auto py-8 px-4" x-data="{ rejectModal: false }">
         <!-- Header Section with Navigation -->
         <div class="flex items-center justify-between mb-6">
             <div class="flex items-center">
@@ -108,51 +109,6 @@
                 @endif
             </div>
 
-            <!-- Attachments Section -->
-            @if(!empty($article->attachments) && count($article->attachments) > 0)
-                <div class="px-8 py-6 bg-blue-50 dark:bg-blue-900/20 border-b border-gray-200 dark:border-zinc-700">
-                    <h3 class="text-lg font-semibold text-zinc-800 dark:text-zinc-200 mb-3 flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
-                        </svg>
-                        Attachments ({{ count($article->attachments) }})
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        @foreach($article->attachments as $attachment)
-                            @php
-                                $filename = basename($attachment);
-                                $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-                                $icon = match($extension) {
-                                    'pdf' => '📄',
-                                    'doc', 'docx' => '📝',
-                                    'xls', 'xlsx' => '📊',
-                                    'ppt', 'pptx' => '📋',
-                                    'txt' => '📃',
-                                    'zip', 'rar', '7z' => '🗜️',
-                                    'jpg', 'jpeg', 'png', 'gif', 'bmp' => '🖼️',
-                                    default => '📎'
-                                };
-                            @endphp
-
-                            <a href="{{ asset('storage/' . $attachment) }}"
-                               target="_blank"
-                               class="flex items-center p-3 border border-gray-200 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200 group">
-                                <span class="text-2xl mr-3 flex-shrink-0">{{ $icon }}</span>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                                        {{ $filename }}
-                                    </p>
-                                    <p class="text-xs text-zinc-400 dark:text-zinc-500 uppercase">{{ $extension }}</p>
-                                </div>
-                                <svg class="w-4 h-4 text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
             <!-- Article Content -->
             <div class="px-8 py-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -176,18 +132,17 @@
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <form action="{{ route('approvals.reject', $article->id) }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit"
-                                onclick="return confirm('Are you sure you want to reject this article?')"
-                                class="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                            Reject Article
-                        </button>
-                    </form>
+                    <!-- Reject Button - Opens Modal -->
+                    <button type="button"
+                            @click="rejectModal = true"
+                            class="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Reject Article
+                    </button>
 
+                    <!-- Approve Button -->
                     <form action="{{ route('approvals.approve', $article->id) }}" method="POST" class="inline">
                         @csrf
                         <button type="submit"
@@ -203,30 +158,114 @@
             </div>
         </div>
 
-        <!-- Additional Actions -->
-        <div class="mt-6 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('articles.show', $article->id) }}"
-                   class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-600 transition-colors duration-200">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                    </svg>
-                    View as Public
-                </a>
+        <!-- Rejection Modal with Alpine.js -->
 
-                <a href="{{ route('articles.edit', $article->id) }}"
-                   class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-200">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                    </svg>
-                    Edit Article
-                </a>
+        <div x-show="rejectModal"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @keydown.escape.window="rejectModal = false"
+             @click="rejectModal = false"
+             class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+             style="display: none;">
+
+            <div @click.stop
+                 x-show="rejectModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white dark:bg-zinc-800">
+
+                <div class="mt-3">
+                    <!-- Modal Header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                            Reject Article
+                        </h3>
+                        <button @click="rejectModal = false"
+                                class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <form action="{{ route('approvals.reject', $article->id) }}" method="POST" x-data="{ rejectionReason: '' }">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="rejection_reason" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Rejection Reason <span class="text-red-500">*</span>
+                            </label>
+                            <textarea
+                                name="rejection_reason"
+                                id="rejection_reason"
+                                x-model="rejectionReason"
+                                x-init="$nextTick(() => $el.focus())"
+                                @input="if (rejectionReason.length > 200) rejectionReason = rejectionReason.slice(0, 200)"
+                                maxlength="200"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white resize-none"
+                                rows="5"
+                                placeholder="Please provide a brief explanation for why this article is being rejected (max 200 characters)."
+                                required
+                            ></textarea>
+
+                            <!-- Character Counter with Color Change -->
+                            <div class="flex justify-between items-center mt-1">
+                                <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    Be specific and constructive to help the author improve.
+                                </p>
+                                <div class="text-xs font-medium"
+                                     :class="rejectionReason.length >= 180 ? 'text-red-500' : rejectionReason.length >= 150 ? 'text-yellow-500' : 'text-gray-500 dark:text-gray-400'">
+                                    <span x-text="rejectionReason.length"></span>/200
+                                </div>
+                            </div>
+
+                            <!-- Warning when approaching limit -->
+                            <div x-show="rejectionReason.length >= 180"
+                                 x-transition
+                                 class="mt-1 text-xs text-red-500 flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"></path>
+                                </svg>
+                                Character limit almost reached
+                            </div>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-zinc-600">
+                            <button
+                                type="button"
+                                @click="rejectModal = false; rejectionReason = ''"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded-md hover:bg-gray-200 dark:hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors duration-200">
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                :disabled="rejectionReason.trim().length === 0 || rejectionReason.length > 200"
+                                :class="{
+                                    'opacity-50 cursor-not-allowed': rejectionReason.trim().length === 0 || rejectionReason.length > 200,
+                                    'hover:bg-red-700': rejectionReason.trim().length > 0 && rejectionReason.length <= 200
+                                }"
+                                class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                Reject Article
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <span class="text-sm text-gray-500 dark:text-gray-400">
-                Submitted {{ $article->created_at->format('M j, Y \a\t g:i A') }}
-            </span>
         </div>
     </div>
 </x-layouts.app.main>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->boolean('invites')->default(false);
             $table->boolean('full_text')->default(true);
             $table->boolean('editors')->default(false);
+            $table->boolean('email_toggle')->default(true);
             $table->timestamps();
         });
     }

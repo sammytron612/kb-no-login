@@ -19,6 +19,7 @@ class Setting extends Model
         'invites',
         'full_text',
         'editors',
+        'email_toggle',
     ];
 
     /**
@@ -30,6 +31,7 @@ class Setting extends Model
         'invites' => 'boolean',
         'full_text' => 'boolean',
         'editors' => 'boolean',
+        'email_toggle' => 'boolean',
     ];
 
     /**

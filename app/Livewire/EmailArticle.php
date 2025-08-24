@@ -1,5 +1,5 @@
 <?php
-// filepath: app/Livewire/EmailArticle.php
+
 
 namespace App\Livewire;
 

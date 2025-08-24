@@ -20,10 +20,11 @@ class ArticleRejectedNotification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(Article $article, User $author)
+    public function __construct(Article $article, User $author, $reason)
     {
         $this->article = $article;
         $this->author = $author;
+        $this->reason = $reason;
     }
 
     /**
@@ -47,6 +48,7 @@ class ArticleRejectedNotification extends Mailable
                 'article' => $this->article,
                 'author' => $this->author,
                 'articleUrl' => route('articles.edit', $this->article->id),
+                'reason' => $this->reason
             ]
         );
     }

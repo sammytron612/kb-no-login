@@ -14,16 +14,14 @@ We regret to inform you that your article has been reviewed and **rejected** by 
 **Reviewed on:** {{ now()->format('M j, Y \a\t g:i A') }}
 **Article KB:** `{{ $article->kb }}`
 
-@if(isset($rejectionReason) && $rejectionReason)
-**Rejection Reason:** {{ $rejectionReason }}
+Reason for Rejection:
+@if(isset($reason) && $reason)
+**Rejection Reason:** {{ $reason }}
 @endif
+
 </x-mail::panel>
 
 We understand this may be disappointing. Please review the feedback and consider making the necessary improvements before resubmitting.
-
-<x-mail::button :url="$articleUrl" color="error">
-View Article Details
-</x-mail::button>
 
 ## What's Next?
 
@@ -32,7 +30,7 @@ View Article Details
 - Resubmit your article for another review
 - Contact admin if you need clarification on the rejection
 
-<x-mail::button :url="$articleUrl .'/' . $article->id . '/edit'" color="primary">
+<x-mail::button :url="$articleUrl" color="primary">
 Edit & Resubmit Article
 </x-mail::button>
 
