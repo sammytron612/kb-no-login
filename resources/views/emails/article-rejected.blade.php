@@ -2,7 +2,7 @@
 <x-mail::message>
 # Your Article Has Been Rejected
 
-Hello **{{ $user->name }}**,
+Hello **{{ $author->name }}**,
 
 We regret to inform you that your article has been reviewed and **rejected** by admin.
 
@@ -10,8 +10,7 @@ We regret to inform you that your article has been reviewed and **rejected** by 
 ## {{ $article->title }}
 
 **Status:****Rejected**
-**Author:** {{ $article->author_name ?? $user->name }}
-**Section:** {{ $article->section->name ?? $article->section ?? 'General' }}
+
 **Reviewed on:** {{ now()->format('M j, Y \a\t g:i A') }}
 **Article KB:** `{{ $article->kb }}`
 

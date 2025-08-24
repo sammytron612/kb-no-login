@@ -2,16 +2,16 @@
 <x-mail::message>
 # Your Article Has Been Approved!
 
-Hello **{{ $user->name }}**,
+Hello **{{ $author->name }}**,
 
 Great news! Your article has been reviewed and **approved** by admin.
 
 <x-mail::panel>
 ## {{ $article->title }}
 
-**Status:** ✅ **Approved**
-**Author:** {{ $article->author_name ?? $user->name }}
-**Section:** {{ $article->section->name ?? $article->section ?? 'General' }}
+**Status: **Approved**
+
+
 **Approved on:** {{ now()->format('M j, Y \a\t g:i A') }}
 **Article KB:** `{{ $article->kb }}
 

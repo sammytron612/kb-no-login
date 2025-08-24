@@ -122,6 +122,7 @@
                         </div>
 
                         <!-- Tags (if any) -->
+
                         @if($article->tags && count($article->tags) > 0)
                             <div class="flex items-center gap-2 mb-4">
                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

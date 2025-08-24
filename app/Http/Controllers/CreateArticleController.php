@@ -53,7 +53,7 @@ class CreateArticleController extends Controller
             'author' => Auth::id(),
             'author_name' => Auth::user()->name ?? '',
             'sectionid' => $validated['sectionid'],
-            'tags' => $validated['tags'] ? explode(',', $validated['tags']) : [],
+            'tags' =>  explode(',', $validated['tags']),
             'attachments' => $attachmentPaths,
             'views' => 0,
             'attachCount' => count($attachmentPaths),

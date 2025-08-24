@@ -32,7 +32,7 @@ class ArticleApprovedNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '✅ Your article has been approved: ' . $this->article->title,
+            subject: 'Your article has been approved: ' . $this->article->title,
         );
     }
 

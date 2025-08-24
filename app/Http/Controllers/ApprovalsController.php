@@ -50,7 +50,7 @@ class ApprovalsController extends Controller
     public function reject($id)
     {
         try {
-            $article = Article::with('author')->findOrFail($id);
+            $article = Article::findOrFail($id);
 
             // Update article status
             $article->published = 0;
