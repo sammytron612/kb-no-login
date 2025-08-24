@@ -12,13 +12,15 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\NewArticleNotification;
 use App\Models\User;
 use App\Traits\SendsEmailNotifications;
+use App\Traits\EmailsEnabled;
 
 class CreateArticleController extends Controller
 {
-    use SendsEmailNotifications;
+    use SendsEmailNotifications, EmailsEnabled;
 
     public function show()
     {
+
         $sections = \App\Models\Section::all();
         return view('articles.create', compact('sections'));
     }
@@ -76,9 +78,11 @@ class CreateArticleController extends Controller
             'body' => $validated['article_body'],
         ]);
 
-        // Only send emails if article is published and approved
-        if ($validated['published'] == 1 && $article->approved == 1) {
-            $this->emailUsers($article);
+        if($this->emailToggle) {
+            // Only send emails if article is published and approved
+            if ($validated['published'] == 1 && $article->approved == 1) {
+                $this->emailUsers($article);
+            }
         }
 
         return redirect()->back()->with('success', 'Article created successfully!');

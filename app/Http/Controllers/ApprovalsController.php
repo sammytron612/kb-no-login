@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\ArticleApprovedNotification;
 use App\Traits\SendsEmailNotifications;
+use App\Traits\EmailsEnabled;
+use App\Models\Setting;
 
 class ApprovalsController extends Controller
 {
-    use SendsEmailNotifications;
+    use SendsEmailNotifications, EmailsEnabled;
 
     public function index($id)
     {
@@ -29,11 +31,13 @@ class ApprovalsController extends Controller
             $article->approved = 1;
             $article->save();
 
-            // Send email to author
-            $this->sendApprovalEmail($article);
+            if($this->emailToggle) {
 
-            // sends new article email to users uses SendsEmailNotifications trait
-            $this->emailUsers($article);
+                // Send email to author
+                $this->sendApprovalEmail($article);
+                // sends new article email to users uses SendsEmailNotifications trait
+                $this->emailUsers($article);
+            }
 
             return redirect()->route('admin.approvals')->with('success', 'Article approved and author notified!');
 
@@ -49,17 +53,21 @@ class ApprovalsController extends Controller
 
     public function reject(Request $request, $id)
     {
-        $reason = $request->rejection_reason;
 
         try {
             $article = Article::findOrFail($id);
+            $reason = $request->rejection_reason;
 
             // Update article status
             $article->published = 0;
             $article->save();
 
-            // Send rejection email to author
-            $this->sendRejectionEmail($article, $reason);
+            if($this->emailToggle) {
+
+                // Send rejection email to author
+                $this->sendRejectionEmail($article, $reason);
+            }
+
 
             return redirect()->route('admin.approvals')->with('success', 'Article rejected and author notified!');
 
@@ -76,6 +84,7 @@ class ApprovalsController extends Controller
     private function sendApprovalEmail($article)
     {
         try {
+
             // Get the author user
             $author = \App\Models\User::find($article->author);
 

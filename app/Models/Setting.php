@@ -83,6 +83,7 @@ class Setting extends Model
             'invites' => $settings->invites,
             'full_text' => $settings->full_text,
             'editors' => $settings->editors,
+            'email_toggle' => $settings->email_toggle,
         ];
     }
 }
