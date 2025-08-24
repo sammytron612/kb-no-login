@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\NewArticleMail;
+use App\Jobs\SendNewArticleEmail;
 
 trait SendsEmailNotifications
 {
@@ -16,6 +17,7 @@ trait SendsEmailNotifications
     private function emailUsers($article)
     {
         $users = Auth::user()->otherUsers();
+
         $activeUsers = $users->where('status', true);
 
         if ($activeUsers->isEmpty()) {
@@ -26,7 +28,7 @@ trait SendsEmailNotifications
         foreach ($activeUsers as $user) {
             try {
                 Log::info("Attempting to send email to: {$user->email}");
-                Mail::to($user->email)->send(new NewArticleMail($article, $user));
+                SendNewArticleEmail::dispatch($article, $user);
                 Log::info("Email sent to: {$user->email}");
             } catch (\Exception $e) {
 
