@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
 ////////// ADMIN ROUTES /////////
 
 Route::middleware(['auth', 'can:isAdmin'])->group(function () {
-    Route::get('/admin/users', [App\Http\Controllers\UserController::class, 'index'])->name('admin.users');
+    Route::view('/admin/users', 'admin.users')->name('admin.users');
 
     Route::get('/admin/invites', [\App\Http\Controllers\InviteController::class, 'index'])->name('admin.invites');
     Route::post('/admin/invites/send', [\App\Http\Controllers\InviteController::class, 'send'])->name('admin.invites.send');

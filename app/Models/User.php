@@ -22,7 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'status'
     ];
 
     /**
@@ -45,6 +46,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+             'status' => 'boolean',
         ];
     }
 
@@ -68,16 +70,55 @@ class User extends Authenticatable
         return User::where('id', '!=', $this->id)->get();
     }
     /**
-     * Scope to exclude current user
+     * Check if user is disabled
      */
-    public function scopeExceptCurrent($query, $userId = null)
+    public function getIsDisabledAttribute()
     {
-        $userId = $userId ?: auth()->id();
-        return $query->where('id', '!=', $userId);
+        return $this->role === 0 || $this->status === false;
     }
+
+    public function getRoleNameAttribute()
+    {
+        $roles = [
+            0 => 'Disabled',
+            1 => 'Admin',
+            2 => 'Editor',
+            3 => 'Viewer'
+        ];
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 1 && $this->status === true;
+    }
+
+    /**
+     * Check if user is editor
+     */
+    public function isEditor()
+    {
+        return $this->role === 2 && $this->status === true;
+    }
+
+
+    public function isViewer()
+    {
+        return $this->role === 3 && $this->status === true;
+    }
+
+    /**
+     * Check if user can access system
+     */
+    public function canAccess()
+    {
+        return $this->status === true;
+    }
+
 
     public function articles()
     {
         return $this->hasMany(\App\Models\Article::class, 'author');
     }
+
+
 }

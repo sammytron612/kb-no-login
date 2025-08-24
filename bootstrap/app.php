@@ -14,6 +14,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'signed.url' => \App\Http\Middleware\RequireSignedUrl::class,
         ]);
+        $middleware->alias([
+            'check.user.status' => \App\Http\Middleware\CheckUserStatus::class,
+        ]);
+
+    $middleware->web(append: [
+            \App\Http\Middleware\CheckUserStatus::class,
+    ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
