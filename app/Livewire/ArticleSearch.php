@@ -50,9 +50,9 @@ class ArticleSearch extends Component
             }
             else
             {
-                /*$articles = Article::where('title', 'like', '%' . $this->search . '%')
+                $articles = Article::where('title', 'like', '%' . $this->search . '%')
                     ->orWhere('tags', 'like', '%' . $this->search . '%')
-                    ->paginate(10);*/
+                    ->paginate(10);
             }
 
         } else {
