@@ -88,7 +88,7 @@
                     </div>
 
                     <!-- Article Excerpt -->
-                    @php $body = Str::limit(strip_tags($article->body->body), 150); @endphp
+                    @php $body = Str::limit(strip_tags($article->body->body ?? ''), 150); @endphp
                     <div class="mb-4">
                         <dov class="text-xs font-bold">Article excerpt:</dov>
                         <p class="text-gray-600 dark:text-gray-300 leading-relaxed prose dark:prose-invert">
