@@ -31,8 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload-image', [\App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload');
     Route::get('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'show'])->name('articles.create')->middleware('can:canCreate');
     Route::post('articles/create', [\App\Http\Controllers\CreateArticleController::class, 'store'])->name('articles.store')->middleware('can:canCreate');
-    Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit')->middleware('can:canEdit');
-    Route::put('articles/{id}', [\App\Http\Controllers\EditArticleController::class, 'update'])->name('articles.update')->middleware('can:canEdit');
+    Route::get('articles/{id}/edit', [\App\Http\Controllers\EditArticleController::class, 'edit'])->name('articles.edit');
+    Route::put('articles/{id}', [\App\Http\Controllers\EditArticleController::class, 'update'])->name('articles.update');
     Route::get('/articles/{id}', [\App\Http\Controllers\ArticlesController::class, 'show'])->name('articles.show');
     Route::get('articles/{article}/download-attachments', [\App\Http\Controllers\ArticlesController::class, 'downloadAttachments'])->name('articles.download-attachments');
     Route::get('/drafts', [DraftsController::class, 'index'])->name('drafts');
