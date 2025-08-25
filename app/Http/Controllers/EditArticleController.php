@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,16 +11,14 @@ use Illuminate\Support\Facades\Gate;
 
 class EditArticleController extends Controller
 {
-
-
     public function edit($id)
     {
         $article = Article::findOrFail($id);
         if (! Gate::allows('canEdit', $article)) {
-            abort(403);}
+            abort(403);
+        }
 
         $sections = Section::all();
-
         return view('articles.edit', compact('article', 'sections'));
     }
 
@@ -27,28 +26,24 @@ class EditArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        if($request->hasFile('attachments')) {
+        // Initialize attachment paths with existing attachments
+        $attachmentPaths = $article->attachments ?? [];
 
-            $attachCount = (count($request->attachments)) + count($article->attachments);
-        }
-        else
-        {
-            $attachCount = count($article->attachments);
+        if($request->hasFile('attachments')) {
+            $attachCount = count($request->file('attachments')) + count($attachmentPaths);
+        } else {
+            $attachCount = count($attachmentPaths);
         }
 
         if ($attachCount > 3) {
-
-            return redirect()->back()->withErrors(['attachments' => 'You can only have up to 3 attachements.']);
+            return redirect()->back()->withErrors(['attachments' => 'You can only have up to 3 attachments.']);
         }
 
-
-
+        // Handle new attachments if they exist
         if ($request->hasFile('attachments')) {
-
-            $attachmentPaths = $article->attachments;
-            $this->handleAttachments($request->attachments);
+            $newAttachments = $this->handleAttachments($request->file('attachments')); // ✅ Pass the files directly
+            $attachmentPaths = array_merge($attachmentPaths, $newAttachments); // ✅ Merge with existing
         }
-
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -59,34 +54,42 @@ class EditArticleController extends Controller
             'published' => 'required',
             'expires' => 'nullable|date',
             'article_body' => 'required|string',
-
         ]);
 
-        $article->body->where('article_id',$article->id)->update(['body' => $request->input('article_body')]);
+        // Update article body
+        $article->body()->update(['body' => $request->input('article_body')]);
 
-        $article->title = $validated['title'];
-        $article->tags = $validated['tags'];
-        $article->sectionid = $validated['sectionId'];
-        $article->scope = $validated['scope'];
-        $article->published = $validated['published'];
-        if($request->published) {
-            $article->approved = auth()->user()->role === 1 ? true : false;
+        // Update article with Scout-safe method
+        Article::withoutSyncingToSearch(function () use ($article, $validated, $attachmentPaths, $request) {
+            $article->update([
+                'title' => $validated['title'],
+                'tags' => explode(',', $validated['tags'] ?? ''),
+                'sectionid' => $validated['sectionId'],
+                'scope' => $validated['scope'],
+                'published' => $validated['published'],
+                'approved' => $request->published ? (auth()->user()->role === 1) : $article->approved,
+                'expires' => $validated['expires'],
+                'attachments' => $attachmentPaths,
+            ]);
+        });
+
+        // Manually sync to Scout after both article and body are updated
+        if (config('scout.enabled') && $article->shouldBeSearchable()) {
+            $article->searchable();
         }
-        $article->expires = $validated['expires'];
-        $article->attachments = $attachmentPaths;
-        $article->save();
 
         return redirect()->route('articles.edit', $article->id)->with('success', 'Article updated successfully!');
     }
 
-    private function handleAttachments($request)
+    private function handleAttachments($files) // ✅ Changed parameter name for clarity
     {
-        foreach ($request->file('attachments') as $file) {
-                $originalName = time() . "-" . $file->getClientOriginalName();
-                $path = $file->storeAs('attachments', $originalName, 'public');
-                $attachmentPaths[] = $path;
-            }
+        $attachmentPaths = []; // ✅ Initialize the array
 
+        foreach ($files as $file) { // ✅ Now iterating over the files directly
+            $originalName = time() . "-" . $file->getClientOriginalName();
+            $path = $file->storeAs('attachments', $originalName, 'public');
+            $attachmentPaths[] = $path;
+        }
 
         return $attachmentPaths;
     }
