@@ -42,7 +42,7 @@ class CreateArticleController extends Controller
         $attachmentPaths = [];
 
         if ($request->hasFile('attachments')) {
-            $attachmentPaths = $this->handleAttachments($request->attachments);
+            $attachmentPaths = $this->handleAttachments($request->file('attachments'));
 
         }
 
@@ -94,18 +94,17 @@ class CreateArticleController extends Controller
         return redirect()->back()->with('success', 'Article created successfully!');
     }
 
-    private function handleAttachments($request)
+    private function handleAttachments($files)
     {
+        $attachmentPaths = [];
 
-
-        foreach ($request->file('attachments') as $file) {
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $extension = $file->getClientOriginalExtension();
-                $filename = $originalName . "-" . time() . "." . $extension;
-                $path = $file->storeAs('attachments', $filename, 'public');
-                $attachmentPaths[] = $path;
-            }
-
+        foreach ($files as $file) {
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $filename = $originalName . "-" . time() . "." . $extension;
+            $path = $file->storeAs('attachments', $filename, 'public');
+            $attachmentPaths[] = $path;
+        }
 
         return $attachmentPaths;
     }
