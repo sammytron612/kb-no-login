@@ -41,7 +41,7 @@ class CreateArticleController extends Controller
 
         if ($request->hasFile('attachments')) {
             $attachmentPaths = $this->handleAttachments($request->attachments);
-        );
+
         }
 
         $article = Article::create([
