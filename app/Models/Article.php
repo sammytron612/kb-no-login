@@ -84,22 +84,22 @@ class Article extends Model
     }
 
     public function toSearchableArray()
-{
+    {
 
-    return [
-        'id' => $this->id,
-        'title' => $this->title,
-        'tags' => $this->tags,
-        'kb' => $this->kb,
-        'author_name' => $this->author_name,
-        'body' => $this->body->body, // Include body content
-        'approved' => (bool) $this->approved,
-        'published' => (bool) $this->published,
-        'sectionid' => $this->sectionid,
-        'author' => $this->author,
-        'scope' => $this->scope,
-    ];
-}
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'tags' => $this->tags,
+            'kb' => $this->kb,
+            'author_name' => $this->author_name,
+            'body' => $this->body->body, // Include body content
+            'approved' => (bool) $this->approved,
+            'published' => (bool) $this->published,
+            'sectionid' => $this->sectionid,
+            'author' => $this->author,
+            'scope' => $this->scope,
+        ];
+    }
 }
 
 
