@@ -39,6 +39,8 @@ class CreateArticleController extends Controller
             'expires' => 'nullable|date',
         ]);
 
+        $attachmentPaths = [];
+
         if ($request->hasFile('attachments')) {
             $attachmentPaths = $this->handleAttachments($request->attachments);
 
@@ -84,7 +86,7 @@ class CreateArticleController extends Controller
 
     private function handleAttachments($request)
     {
-        $attachmentPaths = [];
+
 
         foreach ($request->file('attachments') as $file) {
                 $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
