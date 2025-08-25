@@ -43,15 +43,12 @@ class EditArticleController extends Controller
             return redirect()->back()->withErrors(['attachments' => 'You can only have up to 3 attachements.']);
         }
 
-        $attachmentPaths = $article->attachments;
+
 
         if ($request->hasFile('attachments')) {
 
-            foreach ($request->file('attachments') as $file) {
-                $originalName = time() . "-" . $file->getClientOriginalName();
-                $path = $file->storeAs('attachments', $originalName, 'public');
-                $attachmentPaths[] = $path;
-            }
+            $attachmentPaths = $article->attachments;
+            $this->handleAttachments($request->attachments);
         }
 
 
@@ -82,5 +79,17 @@ class EditArticleController extends Controller
         $article->save();
 
         return redirect()->route('articles.edit', $article->id)->with('success', 'Article updated successfully!');
+    }
+
+    private function handleAttachments($request->attachments)
+    {
+        foreach ($request->file('attachments') as $file) {
+                $originalName = time() . "-" . $file->getClientOriginalName();
+                $path = $file->storeAs('attachments', $originalName, 'public');
+                $attachmentPaths[] = $path;
+            }
+        }
+
+        return $attachmentPaths;
     }
 }

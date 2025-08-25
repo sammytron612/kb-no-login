@@ -39,15 +39,8 @@ class CreateArticleController extends Controller
             'expires' => 'nullable|date',
         ]);
 
-        $attachmentPaths = [];
         if ($request->hasFile('attachments')) {
-            foreach ($request->file('attachments') as $file) {
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $extension = $file->getClientOriginalExtension();
-                $filename = $originalName . "-" . time() . "." . $extension;
-                $path = $file->storeAs('attachments', $filename, 'public');
-                $attachmentPaths[] = $path;
-            }
+            $attachmentPaths = $this->handleAttachments($request->attachments);
         }
 
         $article = Article::create([
@@ -86,6 +79,22 @@ class CreateArticleController extends Controller
         }
 
         return redirect()->back()->with('success', 'Article created successfully!');
+    }
+
+    private function handleAttachments($request)
+    {
+        $attachmentPaths = [];
+
+        foreach ($request->file('attachments') as $file) {
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $filename = $originalName . "-" . time() . "." . $extension;
+                $path = $file->storeAs('attachments', $filename, 'public');
+                $attachmentPaths[] = $path;
+            }
+
+
+        return $attachmentPaths;
     }
 }
 
