@@ -46,33 +46,43 @@ class CreateArticleController extends Controller
 
         }
 
-        $article = Article::create([
-            'title' => $validated['title'],
-            'author' => Auth::id(),
-            'author_name' => Auth::user()->name ?? '',
-            'sectionid' => $validated['sectionid'],
-            'tags' =>  explode(',', $validated['tags']),
-            'attachments' => $attachmentPaths,
-            'views' => 0,
-            'attachCount' => count($attachmentPaths),
-            'scope' => $validated['scope'],
-            'images' => [],
-            'rating' => 0,
-            'approved' => Auth::user()->role === 1 ? true : false,
-            'published' => $validated['published'],
-            'notify_sent' => false,
-            'expires' => $validated['expires'] ?? null,
-        ]);
+        $article = Article::withoutSyncingToSearch(function () use ($validated, $attachmentPaths) {
+            return Article::create([
+                'title' => $validated['title'],
+                'author' => Auth::id(),
+                'author_name' => Auth::user()->name ?? '',
+                'sectionid' => $validated['sectionid'],
+                'tags' => explode(',', $validated['tags']),
+                'attachments' => $attachmentPaths,
+                'views' => 0,
+                'attachCount' => count($attachmentPaths),
+                'scope' => $validated['scope'],
+                'images' => [],
+                'rating' => 0,
+                'approved' => Auth::user()->role === 1 ? true : false,
+                'published' => $validated['published'],
+                'notify_sent' => false,
+                'expires' => $validated['expires'] ?? null,
+            ]);
+        });
 
-        $article->update([
-            'kb' => "kb" . rand(100,999) . $article->id,
-            'slug' => Str::of($validated['title'])->slug('-') . "-" . $article->id
-        ]);
+        Article::withoutSyncingToSearch(function () use ($article, $validated) {
+            $article->update([
+                'kb' => "kb" . rand(100,999) . $article->id,
+                'slug' => Str::of($validated['title'])->slug('-') . "-" . $article->id
+            ]);
+        });
 
+        // Create the body
         ArticleBody::create([
             'article_id' => $article->id,
             'body' => $validated['article_body'],
         ]);
+
+        // Now manually index to Scout (only if Scout is enabled and should be searchable)
+        if (config('scout.enabled') && $article->shouldBeSearchable()) {
+            $article->searchable();
+        }
 
         if($this->emailToggle) {
             // Only send emails if article is published and approved
