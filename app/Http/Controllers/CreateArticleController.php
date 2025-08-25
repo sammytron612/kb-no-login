@@ -40,7 +40,8 @@ class CreateArticleController extends Controller
         ]);
 
         if ($request->hasFile('attachments')) {
-            $attachmentPaths = $this->handleAttachments($request->attachments);
+            $attachmentPaths = $this->handleAttachments($request->attachmentsnpm run build
+        );
         }
 
         $article = Article::create([

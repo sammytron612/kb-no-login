@@ -9,6 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('article_bodies', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('article_id');
             $table->longText('body');
             $table->fullText('body');

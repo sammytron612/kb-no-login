@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
-    use HasFactory;
+    use HasFactory,Searchable;
 
     protected $fillable = [
         'kb',
@@ -79,6 +80,24 @@ class Article extends Model
             ->select('articles.*')
             ->with('body');
     }
+
+    public function toSearchableArray()
+{
+
+    return [
+        'id' => $this->id,
+        'title' => $this->title,
+        'tags' => $this->tags,
+        'kb' => $this->kb,
+        'author_name' => $this->author_name,
+        'body' => $this->body->body, // Include body content
+        'approved' => (bool) $this->approved,
+        'published' => (bool) $this->published,
+        'sectionid' => $this->sectionid,
+        'author' => $this->author,
+        'scope' => $this->scope,
+    ];
+}
 }
 
 

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class ArticleBody extends Model
 {
-    use HasFactory;
+    use HasFactory,Searchable;
 
     public $timestamps = false;
 
