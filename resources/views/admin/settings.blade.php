@@ -57,7 +57,7 @@
         </div>
 
         <!-- Full Text Search Setting -->
-        <div class="border-b border-gray-200 dark:border-zinc-700 p-4 md:p-6">
+     <!--   <div class="border-b border-gray-200 dark:border-zinc-700 p-4 md:p-6">
             <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
                 <div class="flex-1">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Full Text Search</h3>
@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-
+-->
         <!-- Editor Permissions Setting -->
         <div class="p-4 md:p-6">
             <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
