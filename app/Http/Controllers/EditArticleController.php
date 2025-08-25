@@ -11,15 +11,13 @@ use Illuminate\Support\Facades\Gate;
 class EditArticleController extends Controller
 {
 
-    public function __construct($id)
+
+    public function edit($id)
     {
         $article = Article::findOrFail($id);
         if (! Gate::allows('canEdit', $article)) {
             abort(403);}
-    }
 
-    public function edit($id)
-    {
         $sections = Section::all();
 
         return view('articles.edit', compact('article', 'sections'));
@@ -81,14 +79,14 @@ class EditArticleController extends Controller
         return redirect()->route('articles.edit', $article->id)->with('success', 'Article updated successfully!');
     }
 
-    private function handleAttachments($request->attachments)
+    private function handleAttachments($request)
     {
         foreach ($request->file('attachments') as $file) {
                 $originalName = time() . "-" . $file->getClientOriginalName();
                 $path = $file->storeAs('attachments', $originalName, 'public');
                 $attachmentPaths[] = $path;
             }
-        }
+
 
         return $attachmentPaths;
     }
