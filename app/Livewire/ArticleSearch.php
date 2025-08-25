@@ -39,20 +39,10 @@ class ArticleSearch extends Component
                     ->where('published', true)
                     ->where('approved', true)
                     ->paginate(10);
-                /*
-
-                $articles = Article::search($this->search)
-                    ->where('published', true)
-                    ->where('approved', true)
-                    ->paginate(10);
-
-                //$articles = Article::fullTextSearch($this->search)->paginate(10);*/
             }
             else
             {
-                $articles = Article::where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('tags', 'like', '%' . $this->search . '%')
-                    ->paginate(10);
+                $articles = Article::fullTextSearch($this->search)->paginate(10);
             }
 
         } else {
