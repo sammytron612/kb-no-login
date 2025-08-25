@@ -30,7 +30,7 @@ class ArticleSearch extends Component
     {
 
         if (strlen($this->search) > 2) {
-            if($this->fullTextEnabled === true)
+            if(config('scout.enabled'))
             {
 
                 $searchTerm = '*' . $this->search . '*';
@@ -39,9 +39,11 @@ class ArticleSearch extends Component
                     ->where('published', true)
                     ->where('approved', true)
                     ->paginate(10);
+
             }
             else
             {
+
                 $articles = Article::fullTextSearch($this->search)->paginate(10);
             }
 

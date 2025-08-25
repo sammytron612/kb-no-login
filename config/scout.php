@@ -9,7 +9,9 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'driver' => env('SCOUT_DRIVER', 'meilisearch'),
+    'enabled' => filter_var(env('SCOUT_ENABLED', false), FILTER_VALIDATE_BOOLEAN),
+    'driver'  => env('SCOUT_DRIVER', 'meilisearch'),
+    // ...rest of file...
 
     /*
     |--------------------------------------------------------------------------
@@ -84,6 +86,7 @@ return [
     | Meilisearch Configuration
     |--------------------------------------------------------------------------
     */
+    'enabled' => env('SCOUT_ENABLED', false),
 
     'meilisearch' => [
         'host' => env('MEILISEARCH_HOST'),

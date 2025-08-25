@@ -61,6 +61,8 @@ class Article extends Model
     /**
      * Scope for full-text search on articles and article_bodies.
      */
+
+
     public function scopeFullTextSearch(Builder $query, string $keyword): Builder
     {
         return $query
