@@ -106,7 +106,7 @@
             </div>
 
             <!-- Subtle Quick Actions -->
-            <div class="flex justify-center gap-4 mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
                 <!-- Create Article -->
                 @can(['canCreate'])
                 <a href="/articles/create" class="w-full group block">
@@ -187,4 +187,5 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-layouts.app.main>
+

@@ -16,7 +16,7 @@
             <input type="text"
                    wire:model.live.debounce.300ms="search"
                    placeholder="Search articles, topics, or keywords..."
-                   class="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-zinc-600 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-800 dark:text-white bg-white transition-all duration-200 hover:shadow-xl" />
+                   class="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-zinc-600 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-800 dark:text-white bg-white transition-all duration-200 hover:shadow-xl placeholder:text-xs md:placeholder:text-lg" />
             @if($search)
                 <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
                     <button wire:click="$set('search', '')" class="text-gray-400 hover:text-gray-600 transition-colors">
@@ -45,7 +45,7 @@
                     <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 space-y-4 sm:space-y-0">
                         <div class="flex-1 min-w-0">
                             <a href="{{ route('articles.show', $article->id) }}"
-                               class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 group-hover:text-blue-600">
+                               class="sm:text-md md:text-lg font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 group-hover:text-blue-600">
                                 {{ $article->title }}
                             </a>
                             <div class="flex flex-wrap items-center gap-2 mt-2">
@@ -89,7 +89,7 @@
 
                     <!-- Article Excerpt -->
                     @php $body = Str::limit(strip_tags($article->body->body ?? ''), 150); @endphp
-                    <div class="mb-4">
+                    <div class="mb-4 hidden md:block my-4">
                         <div class="text-xs font-bold text-gray-500 dark:text-gray-400">Article excerpt:</div>
                         <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
                             {!! $body !!}....

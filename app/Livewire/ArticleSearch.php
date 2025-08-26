@@ -16,10 +16,6 @@ class ArticleSearch extends Component
 
     public $fullTextEnabled;
 
-    public function mount()
-    {
-        $this->fullTextEnabled = Setting::get('full_text');
-    }
 
     public function updatingSearch()
     {
