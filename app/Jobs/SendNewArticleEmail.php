@@ -25,16 +25,28 @@ class SendNewArticleEmail implements ShouldQueue
         public Article $article,
         public User $user
     ) {
-        $this->onQueue('emails');
-        $this->delay(now()->addSeconds(5)); // Small delay
+        $this->user = $user;
+        $this->article = $article;
     }
 
     public function handle(): void
     {
+        \Log::info('SendNewArticleEmail job started', [
+        'article_id' => $this->article->id,
+        'user_email' => $this->user->email
+    ]);
         try {
             Mail::to($this->user->email)->send(new NewArticleMail($this->article, $this->user));
+            \Log::info('Email sent successfully', [
+            'article_id' => $this->article->id,
+            'user_email' => $this->user->email
+        ]);
         } catch (\Exception $e) {
-            // Re-throw to trigger retry
+            \Log::error('Email sending failed', [
+            'article_id' => $this->article->id,
+            'user_email' => $this->user->email,
+            'error' => $e->getMessage()
+        ]);
             throw $e;
         }
     }
