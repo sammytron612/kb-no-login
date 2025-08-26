@@ -16,7 +16,7 @@
             <input type="text"
                    wire:model.live.debounce.300ms="search"
                    placeholder="Search articles, topics, or keywords..."
-                   class="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-zinc-600 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-800 dark:text-white bg-white transition-all duration-200 hover:shadow-xl placeholder:text-md md:placeholder:text-lg" />
+                   class="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-zinc-600 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-800 dark:text-white bg-white transition-all duration-200 hover:shadow-xl placeholder:text-sm md:placeholder:text-lg   placeholder:text-center" />
             @if($search)
                 <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
                     <button wire:click="$set('search', '')" class="text-gray-400 hover:text-gray-600 transition-colors">
