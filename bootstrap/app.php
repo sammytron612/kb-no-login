@@ -11,11 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'signed.url' => \App\Http\Middleware\RequireSignedUrl::class,
-        ]);
+
         $middleware->alias([
             'check.user.status' => \App\Http\Middleware\CheckUserStatus::class,
+            'signed.url' => \App\Http\Middleware\SignedUrl::class,
         ]);
 
     $middleware->web(append: [
