@@ -33,8 +33,6 @@ class ArticleSearch extends Component
             if(config('scout.enabled'))
             {
 
-                $searchTerm = '*' . $this->search . '*';
-
                 $articles = Article::search($this->search)
                     ->where('published', true)
                     ->where('approved', true)

@@ -85,6 +85,24 @@ class Article extends Model
 
     public function toSearchableArray()
     {
+        if (!$this->relationLoaded('body')) {
+        $this->load('body');}
+        // Get and clean body content - STRIP HTML TAGS
+        $bodyContent = '';
+
+
+            // Remove HTML tags
+            $bodyContent = strip_tags($this->body->body);
+
+            // Decode HTML entities (&amp; &lt; &gt; etc.)
+            $bodyContent = html_entity_decode($bodyContent, ENT_QUOTES, 'UTF-8');
+
+            // Clean up extra whitespace
+            $bodyContent = preg_replace('/\s+/', ' ', trim($bodyContent));
+            // ...existing code...
+
+        // Convert tags array to string for searching
+        $tags = is_array($this->tags) ? implode(' ', $this->tags) : ($this->tags ?? '');
 
         return [
             'id' => $this->id,
@@ -92,7 +110,7 @@ class Article extends Model
             'tags' => $this->tags,
             'kb' => $this->kb,
             'author_name' => $this->author_name,
-            'body' => $this->body->body, // Include body content
+            'body' => $bodyContent, // Include body content
             'approved' => (bool) $this->approved,
             'published' => (bool) $this->published,
             'sectionid' => $this->sectionid,
