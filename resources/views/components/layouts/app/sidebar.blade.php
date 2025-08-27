@@ -1,33 +1,40 @@
-<!-- filepath: c:\Users\Kevin\kb-new\resources\views\components\layouts\app\sidebar.blade.php -->
+<!-- Hamburger Button (shown when sidebar is closed) -->
+<button
+    x-data="{ sidebarOpen: false }"
+    @click="sidebarOpen = !sidebarOpen; $dispatch('toggle-sidebar')"
+    x-show="!sidebarOpen"
+    @sidebar-opened.window="sidebarOpen = true"
+    @sidebar-closed.window="sidebarOpen = false"
+    class="fixed top-4 left-4 z-50 p-2 bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
+>
+    <flux:icon.bars-3 class="h-6 w-6 text-gray-600 dark:text-gray-300" />
+</button>
+
+<!-- Sidebar -->
 <div
     x-data="{
-        open: window.innerWidth >= 1024,
-        updateSidebar() {
-            this.open = window.innerWidth >= 1024;
+        open: false,
+        toggle() {
+            this.open = !this.open;
+            this.$dispatch(this.open ? 'sidebar-opened' : 'sidebar-closed');
         }
     }"
-    x-init="
-        updateSidebar();
-        window.addEventListener('resize', () => updateSidebar());
-        // Update main content margin when sidebar state changes
-        $watch('open', value => {
-            const main = document.querySelector('main');
-            if (main) {
-                main.className = main.className.replace(/ml-\d+/g, '');
-                main.classList.add(value ? 'ml-64' : 'ml-16');
-            }
-        });
-    "
-    :class="open ? 'w-64' : 'w-16'"
-    class="h-screen flex flex-col border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 z-40 transition-all duration-200 fixed top-0 left-0"
+    @toggle-sidebar.window="toggle()"
+    x-show="open"
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="transform -translate-x-full"
+    x-transition:enter-end="transform translate-x-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="transform translate-x-0"
+    x-transition:leave-end="transform -translate-x-full"
+    class="w-64 h-screen flex flex-col border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 z-40 fixed top-0 left-0 shadow-xl"
 >
-    <!-- Toggle Button -->
-    <button @click="open = !open" class="p-4 focus:outline-none hover:cursor-pointer">
-        <flux:icon.bars-3 x-show="!open" class="h-6 w-6 text-gray-600 dark:text-gray-300" />
-        <flux:icon.x-mark x-show="open" class="h-6 w-6 text-gray-600 dark:text-gray-300" />
+    <!-- Close Button -->
+    <button @click="toggle()" class="self-end p-4 focus:outline-none hover:cursor-pointer">
+        <flux:icon.x-mark class="h-6 w-6 text-gray-600 dark:text-gray-300" />
     </button>
 
-    <div x-show="open" class="flex-1 flex flex-col transition-all duration-200 overflow-hidden">
+    <div class="flex-1 flex flex-col overflow-hidden">
         <!-- Logo -->
         <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 px-6 py-4" wire:navigate>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" class="w-10 h-10">
@@ -109,3 +116,19 @@
         </div>
     </div>
 </div>
+
+<!-- Backdrop - Makes main content opaque -->
+<div
+    x-data="{ sidebarOpen: false }"
+    @sidebar-opened.window="sidebarOpen = true"
+    @sidebar-closed.window="sidebarOpen = false"
+    x-show="sidebarOpen"
+    @click="$dispatch('toggle-sidebar')"
+    x-transition:enter="transition-opacity ease-linear duration-200"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition-opacity ease-linear duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 bg-white/50 dark:bg-black/30 z-30"
+></div>
