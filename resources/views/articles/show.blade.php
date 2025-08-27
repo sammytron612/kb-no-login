@@ -1,9 +1,7 @@
 <x-layouts.app.main>
-    <div class="bg-gray-50 dark:bg-zinc-900 py-8 sm:py-12">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-
-
-                    <!-- Page Header & Actions -->
+    <div class="bg-gray-50 dark:bg-zinc-900 py-8 sm:py-12 overflow-x-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+            <!-- Page Header & Actions -->
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
                 <div class="text-center sm:text-left">
                     <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Article Details</h1>
@@ -38,33 +36,33 @@
 
             <!-- Main Content Card -->
             <div class="bg-white dark:bg-zinc-800 rounded-xl shadow-lg overflow-hidden">
-                <div class="p-6 sm:p-8">
+                <div class="p-6 sm:p-8 overflow-x-hidden min-w-0">
                     <!-- Article Title -->
-                    <h2 class="text-3xl font-extrabold text-zinc-900 dark:text-white mb-4">{{ $article->title }}</h2>
+                    <h2 class="text-3xl font-extrabold text-zinc-900 dark:text-white mb-4 break-words">{{ $article->title }}</h2>
 
                     <!-- Metadata Grid -->
-                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 text-sm border-t border-b border-zinc-200 dark:border-zinc-700 py-4 mb-6">
-                        <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300">
-                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                            <span class="font-medium">{{ $article->author_name }}</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 text-sm border-t border-b border-zinc-200 dark:border-zinc-700 py-4 mb-6 overflow-x-hidden">
+                        <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300 min-w-0">
+                            <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            <span class="font-medium truncate">{{ $article->author_name }}</span>
                         </div>
-                        <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300">
-                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300 min-w-0">
+                            <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             <span class="font-medium">{{ $article->created_at->format('M d, Y') }}</span>
                         </div>
-                        <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300">
-                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300 min-w-0">
+                            <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                             <span class="font-medium">{{ number_format($article->views) }} views</span>
                         </div>
-                        <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300">
+                        <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300 min-w-0">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                                 {{ $article->kb }}
                             </span>
                         </div>
-                        <div class="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300">
+                        <div class="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300 min-w-0">
                             @if($article->rating)
                                 @for ($i = 1; $i <= 5; $i++)
-                                    <svg class="w-5 h-5 {{ $i <= round($article->rating) ? 'text-yellow-400' : 'text-zinc-300 dark:text-zinc-600' }}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                    <svg class="w-5 h-5 flex-shrink-0 {{ $i <= round($article->rating) ? 'text-yellow-400' : 'text-zinc-300 dark:text-zinc-600' }}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                                 @endfor
                             @else
                                 <span class="text-xs font-medium">No rating yet</span>
@@ -74,7 +72,7 @@
 
                     <!-- Attachments Section -->
                     @if(!empty($article->attachments) && count($article->attachments) > 0)
-                        <div class="mb-8">
+                        <div class="mb-8 overflow-x-hidden">
                             <h3 class="text-lg font-semibold text-zinc-800 dark:text-zinc-200 mb-3">Attachments</h3>
                             <div class="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg border border-zinc-200 dark:border-zinc-700 p-4">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -89,7 +87,7 @@
                                                 <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate group-hover:text-blue-500">{{ $filename }}</p>
                                                 <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ $filesize }}</p>
                                             </div>
-                                            <svg class="w-5 h-5 text-zinc-400 group-hover:text-blue-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                            <svg class="w-5 h-5 text-zinc-400 group-hover:text-blue-500 ml-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                         </a>
                                     @endforeach
                                 </div>
@@ -106,15 +104,17 @@
                     @endif
 
                     <!-- Article Body -->
-
-                    <div class="prose prose-zinc dark:prose-invert max-w-100 prose-sm sm:prose-base">
-                        <div class="break-words overflow-hidden text-wrap hyphens-auto" style="word-wrap: break-word; overflow-wrap: break-word; word-break: break-word;">
-                            {!! $article->body->body !!}
+                    <div class="overflow-x-hidden min-w-0">
+                        <div class="prose prose-zinc dark:prose-invert max-w-none prose-sm sm:prose-base overflow-x-hidden">
+                            <div style="word-wrap: break-word; overflow-wrap: anywhere; word-break: break-word; hyphens: auto; max-width: 100%;">
+                                {!! $article->body->body !!}
+                            </div>
                         </div>
                     </div>
+                </div>
 
                 <!-- Footer Section for Feedback and Comments -->
-                <div class="bg-zinc-50 dark:bg-zinc-900/50 px-6 sm:px-8 py-6 border-t border-zinc-200 dark:border-zinc-700">
+                <div class="bg-zinc-50 dark:bg-zinc-900/50 px-6 sm:px-8 py-6 border-t border-zinc-200 dark:border-zinc-700 overflow-x-hidden">
                     <div class="space-y-8">
                         @if($article->scope)
                             <livewire:email-article :article="$article" />
