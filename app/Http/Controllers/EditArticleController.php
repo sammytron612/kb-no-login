@@ -1,16 +1,21 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Section;
-use Illuminate\Support\Str;
+use App\Services\ArticleService;
 use Illuminate\Support\Facades\Gate;
 
 class EditArticleController extends Controller
 {
+    public function __construct(
+        private ArticleService $articleService
+    ) {
+        // No need to call parent::__construct() since base Controller is empty
+    }
+
     public function edit($id)
     {
         $article = Article::findOrFail($id);
@@ -26,23 +31,13 @@ class EditArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        // Initialize attachment paths with existing attachments
-        $attachmentPaths = $article->attachments ?? [];
+        // Check attachment count limit
+        $existingAttachments = $article->attachments ?? [];
+        $newAttachmentCount = $request->hasFile('attachments') ? count($request->file('attachments')) : 0;
+        $totalAttachments = count($existingAttachments) + $newAttachmentCount;
 
-        if($request->hasFile('attachments')) {
-            $attachCount = count($request->file('attachments')) + count($attachmentPaths);
-        } else {
-            $attachCount = count($attachmentPaths);
-        }
-
-        if ($attachCount > 3) {
+        if ($totalAttachments > 3) {
             return redirect()->back()->withErrors(['attachments' => 'You can only have up to 3 attachments.']);
-        }
-
-        // Handle new attachments if they exist
-        if ($request->hasFile('attachments')) {
-            $newAttachments = $this->handleAttachments($request->file('attachments')); // ✅ Pass the files directly
-            $attachmentPaths = array_merge($attachmentPaths, $newAttachments); // ✅ Merge with existing
         }
 
         $validated = $request->validate([
@@ -56,41 +51,14 @@ class EditArticleController extends Controller
             'article_body' => 'required|string',
         ]);
 
-        // Update article body
-        $article->body()->update(['body' => $request->input('article_body')]);
+        // Map sectionId to sectionid for consistency
+        $validated['sectionid'] = $validated['sectionId'];
+        unset($validated['sectionId']);
 
-        // Update article with Scout-safe method
-        Article::withoutSyncingToSearch(function () use ($article, $validated, $attachmentPaths, $request) {
-            $article->update([
-                'title' => $validated['title'],
-                'tags' => explode(',', $validated['tags'] ?? ''),
-                'sectionid' => $validated['sectionId'],
-                'scope' => $validated['scope'],
-                'published' => $validated['published'],
-                'approved' => $request->published ? (auth()->user()->role === 1) : $article->approved,
-                'expires' => $validated['expires'],
-                'attachments' => $attachmentPaths,
-            ]);
-        });
+        $files = $request->hasFile('attachments') ? $request->file('attachments') : null;
 
-        // Manually sync to Scout after both article and body are updated
-        if (config('scout.enabled') && $article->shouldBeSearchable()) {
-            $article->searchable();
-        }
+        $article = $this->articleService->updateArticle($article, $validated, $files);
 
         return redirect()->route('articles.edit', $article->id)->with('success', 'Article updated successfully!');
-    }
-
-    private function handleAttachments($files) // ✅ Changed parameter name for clarity
-    {
-        $attachmentPaths = []; // ✅ Initialize the array
-
-        foreach ($files as $file) { // ✅ Now iterating over the files directly
-            $originalName = time() . "-" . $file->getClientOriginalName();
-            $path = $file->storeAs('attachments', $originalName, 'public');
-            $attachmentPaths[] = $path;
-        }
-
-        return $attachmentPaths;
     }
 }

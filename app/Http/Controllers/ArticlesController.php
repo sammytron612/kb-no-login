@@ -4,10 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Services\ArticleService;
 use Illuminate\Support\Facades\Gate;
 
 class ArticlesController extends Controller
 {
+    public function __construct(
+        private ArticleService $articleService
+    ) {
+
+    }
+
     public function show($id)
     {
         $article = Article::with('body')->findOrFail($id);
@@ -33,13 +40,8 @@ class ArticlesController extends Controller
             abort(403, 'You are not authorized to delete this article.');
         }
 
-        // Delete attachments from storage
-        if (!empty($article->attachments)) {
-            foreach ($article->attachments as $attachment) {
-                \Storage::disk('public')->delete($attachment);
-            }
-        }
-        $article->delete();
+        $this->articleService->deleteArticle($article);
+
         return redirect()->route('dashboard')->with('success', 'Article deleted successfully.');
     }
 
