@@ -1,13 +1,24 @@
 <x-layouts.app.main>
     <div class="bg-gray-50 dark:bg-zinc-900 py-8 sm:py-12 overflow-x-hidden">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
             <!-- Page Header & Actions -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-                <div class="text-center sm:text-left">
+            <div class="mb-6">
+                <!-- Mobile: Centered Header -->
+                <div class="text-center mb-4 md:hidden pt-16 sm:pt-0">
                     <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Article Details</h1>
                     <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Review the content, attachments, and feedback.</p>
                 </div>
-                <div class="flex items-center justify-left sm:justify-end gap-2 mt-4 sm:mt-0 flex-shrink-0">
+
+                <!-- Desktop: Header and Buttons Side by Side -->
+                <div class="hidden md:flex md:items-center md:justify-center mb-4">
+                    <div class="text-center">
+                        <h1 class="textlg md:text-3xl font-bold text-zinc-900 dark:text-white mt-4">Article Details</h1>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Review the content, attachments, and feedback.</p>
+                    </div>
+                </div>
+
+                <!-- Mobile: Centered Action Buttons -->
+                <div class="flex items-center justify-center gap-2 flex-wrap md:hidden">
                     @can('canEdit', $article)
                         <a href="{{ route('articles.edit', $article->id) }}" class="inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm">
                             <svg class="w-4 h-4 sm:mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
@@ -37,9 +48,35 @@
             <!-- Main Content Card -->
             <div class="bg-white dark:bg-zinc-800 rounded-xl shadow-lg overflow-hidden">
                 <div class="p-6 sm:p-8 overflow-x-hidden min-w-0">
-                    <!-- Article Title -->
-                    <h2 class="text-3xl font-extrabold text-zinc-900 dark:text-white mb-4 break-words">{{ $article->title }}</h2>
-
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-extrabold text-zinc-900 dark:text-white mb-4 break-words">{{ $article->title }}</h2>
+                        <!-- Action Buttons for Desktop -->
+                        <div class="hidden md:flex items-center gap-2 flex-shrink-0">
+                            @can('canEdit', $article)
+                                <a href="{{ route('articles.edit', $article->id) }}" class="inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm">
+                                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                    <span>Edit</span>
+                                </a>
+                            @endcan
+                            <button onclick="window.print()" class="inline-flex items-center justify-center px-3 py-2 bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-600 transition-colors text-sm font-medium shadow-sm">
+                                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                                <span>Print</span>
+                            </button>
+                            @can('canDelete', $article)
+                                <div x-data>
+                                    <form id="delete-form-{{ $article->id }}" action="{{ route('articles.destroy', $article->id) }}" method="POST" class="hidden">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                    <button @click="if (confirm('Are you sure you want to delete this article? This action cannot be undone.')) { document.getElementById('delete-form-{{ $article->id }}').submit(); }"
+                                            class="inline-flex items-center justify-center px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium shadow-sm">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
+                            @endcan
+                        </div>
+                    </div>
                     <!-- Metadata Grid -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 text-sm border-t border-b border-zinc-200 dark:border-zinc-700 py-4 mb-6 overflow-x-hidden">
                         <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300 min-w-0">
@@ -55,7 +92,7 @@
                             <span class="font-medium">{{ number_format($article->views) }} views</span>
                         </div>
                         <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-300 min-w-0">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            <span class="uppercase inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                                 {{ $article->kb }}
                             </span>
                         </div>
