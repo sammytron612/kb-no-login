@@ -57,6 +57,10 @@ class Article extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'author');
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     /**
      * Scope for full-text search on articles and article_bodies.

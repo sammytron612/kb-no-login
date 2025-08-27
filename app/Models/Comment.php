@@ -20,4 +20,9 @@ class Comment extends Model
     {
         return $this->belongsTo(\App\Models\User::class);
     }
+
+    public function article()
+    {
+        return $this->belongsTo(\App\Models\Article::class);
+    }
 }
