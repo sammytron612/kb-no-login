@@ -8,13 +8,17 @@ trait EmailsEnabled
 {
     private $emailToggle;
 
-    public function __construct()
+    protected function getEmailToggle()
     {
-        $this->emailToggle = Setting::getInstance()->email_toggle;
-
-        // Call parent constructor if it exists
-        if (method_exists(parent::class, '__construct')) {
-            parent::__construct();
+        if ($this->emailToggle === null) {
+            $this->emailToggle = Setting::getInstance()->email_toggle;
         }
+
+        return $this->emailToggle;
+    }
+
+    protected function isEmailEnabled(): bool
+    {
+        return $this->getEmailToggle();
     }
 }

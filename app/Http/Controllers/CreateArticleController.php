@@ -3,24 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use App\Models\Article;
-use App\Models\ArticleBody;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-use App\Mail\NewArticleNotification;
-use App\Models\User;
-use App\Traits\SendsEmailNotifications;
-use App\Traits\EmailsEnabled;
+use App\Services\ArticleService;
 
 class CreateArticleController extends Controller
 {
-    use SendsEmailNotifications, EmailsEnabled;
+    public function __construct(
+        private ArticleService $articleService
+    ) {
+        // No need to call parent::__construct() since base Controller is empty
+    }
 
     public function show()
     {
-
         $sections = \App\Models\Section::all();
         return view('articles.create', compact('sections'));
     }
@@ -39,74 +33,11 @@ class CreateArticleController extends Controller
             'expires' => 'nullable|date',
         ]);
 
-        $attachmentPaths = [];
+        $files = $request->hasFile('attachments') ? $request->file('attachments') : null;
 
-        if ($request->hasFile('attachments')) {
-            $attachmentPaths = $this->handleAttachments($request->file('attachments'));
-
-        }
-
-        $article = Article::withoutSyncingToSearch(function () use ($validated, $attachmentPaths) {
-            return Article::create([
-                'title' => $validated['title'],
-                'author' => Auth::id(),
-                'author_name' => Auth::user()->name ?? '',
-                'sectionid' => $validated['sectionid'],
-                'tags' => explode(',', $validated['tags']),
-                'attachments' => $attachmentPaths,
-                'views' => 0,
-                'attachCount' => count($attachmentPaths),
-                'scope' => $validated['scope'],
-                'images' => [],
-                'rating' => 0,
-                'approved' => Auth::user()->role === 1 ? true : false,
-                'published' => $validated['published'],
-                'notify_sent' => false,
-                'expires' => $validated['expires'] ?? null,
-            ]);
-        });
-
-        Article::withoutSyncingToSearch(function () use ($article, $validated) {
-            $article->update([
-                'kb' => "kb" . rand(100,999) . $article->id,
-                'slug' => Str::of($validated['title'])->slug('-') . "-" . $article->id
-            ]);
-        });
-
-        // Create the body
-        ArticleBody::create([
-            'article_id' => $article->id,
-            'body' => $validated['article_body'],
-        ]);
-
-        // Now manually index to Scout (only if Scout is enabled and should be searchable)
-        if (config('scout.enabled') && $article->shouldBeSearchable()) {
-            $article->searchable();
-        }
-
-        if($this->emailToggle) {
-            // Only send emails if article is published and approved
-            if ($validated['published'] == 1 && $article->approved == 1) {
-                $this->emailUsers($article);
-            }
-        }
+        $article = $this->articleService->createArticle($validated, $files);
 
         return redirect()->back()->with('success', 'Article created successfully!');
-    }
-
-    private function handleAttachments($files)
-    {
-        $attachmentPaths = [];
-
-        foreach ($files as $file) {
-            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension();
-            $filename = $originalName . "-" . time() . "." . $extension;
-            $path = $file->storeAs('attachments', $filename, 'public');
-            $attachmentPaths[] = $path;
-        }
-
-        return $attachmentPaths;
     }
 }
 
