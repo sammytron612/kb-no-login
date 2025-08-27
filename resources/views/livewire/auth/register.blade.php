@@ -26,10 +26,14 @@ new #[Layout('components.layouts.auth')] class extends Component {
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $hasInvite = Invitation::where('email', $validated['email'])->first();
+
 
         $validated['password'] = Hash::make($validated['password']);
 
+         $hasInvite = Invitation::where('email', $validated['email'])->first();
+        if ($hasInvite) {
+            $hasInvite->update(['accepted_at' => now()]);
+        }
         event(new Registered(($user = User::create($validated))));
 
         Auth::login($user);

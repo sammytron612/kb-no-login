@@ -18,7 +18,7 @@ trait SendsEmailNotifications
     {
         $users = Auth::user()->otherUsers();
 
-        $activeUsers = $users->where('status', true);
+        $activeUsers = $users->where('status', true)->where('notifications', true);
 
         if ($activeUsers->isEmpty()) {
             Log::info("No other users found to email for article: {$article->title}");

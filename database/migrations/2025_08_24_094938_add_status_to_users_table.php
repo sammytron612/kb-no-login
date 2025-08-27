@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('status')->default(true)->after('role');
+            $table->boolean('notifications')->default(true)->after('role');
         });
     }
 

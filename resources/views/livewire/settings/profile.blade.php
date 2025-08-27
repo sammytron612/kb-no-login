@@ -9,6 +9,7 @@ use Livewire\Volt\Component;
 new class extends Component {
     public string $name = '';
     public string $email = '';
+    public bool $notifications = false;
 
     /**
      * Mount the component.
@@ -17,6 +18,7 @@ new class extends Component {
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->notifications = (bool) Auth::user()->notifications;
     }
 
     /**
@@ -28,7 +30,6 @@ new class extends Component {
 
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-
             'email' => [
                 'required',
                 'string',
@@ -37,6 +38,7 @@ new class extends Component {
                 'max:255',
                 Rule::unique(User::class)->ignore($user->id)
             ],
+            'notifications' => ['boolean'],
         ]);
 
         $user->fill($validated);
@@ -50,6 +52,15 @@ new class extends Component {
         $this->dispatch('profile-updated', name: $user->name);
     }
 
+public function updatedNotifications($value): void
+    {
+
+        $user = Auth::user();
+        $user->notifications = $value;
+        $user->save();
+
+        $this->dispatch('profile-updated', name: $user->name);
+    }
     /**
      * Send an email verification notification to the current user.
      */
@@ -72,7 +83,7 @@ new class extends Component {
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
+    <x-settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address and email settings')">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
             <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name" />
 
@@ -98,14 +109,22 @@ new class extends Component {
                 @endif
             </div>
 
+            <!-- Email Notifications Toggle -->
+            <x-action-message class="me-3 text-green-400 font-bold text-lg" on="profile-updated">
+                    {{ __('Saved.') }}
+            </x-action-message>
+            <div class="space-y-2">
+                <flux:switch
+                    wire:model.live="notifications"
+                    :label="__('Email Notifications')"
+                    :description="__('Receive email notifications for updates, comments, and other activities')"
+                />
+            </div>
+
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">
                     <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
                 </div>
-
-                <x-action-message class="me-3" on="profile-updated">
-                    {{ __('Saved.') }}
-                </x-action-message>
             </div>
         </form>
 
