@@ -1,14 +1,14 @@
 <!-- filepath: c:\Users\Kevin\kb-new\resources\views\dashboard.blade.php -->
 <x-layouts.app.main :title="__('Dashboard')">
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
-        <!-- Subtle Background Elements -->
+        <!--Background Elements -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
             <div class="absolute -top-20 -right-20 w-40 h-40 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-2xl"></div>
             <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-green-100 dark:bg-green-900/20 rounded-full blur-2xl"></div>
         </div>
 
         <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8 relative z-10">
-            <!-- Subtle Header Section -->
+            <!--  Header Section -->
             <div class="text-center mb-12">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
                     <svg class="w-8 h-8 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -26,7 +26,7 @@
                 </p>
             </div>
 
-            <!-- Subtle Success Message -->
+            <!-- Success Message -->
             @if (session('success'))
                 <div class="mb-8">
                     <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700/50 rounded-xl p-4">
@@ -46,7 +46,7 @@
                 </div>
             @endif
 
-            <!-- Subtle Stats Cards -->
+            <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <!-- Total Articles Card -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow duration-200">
@@ -105,21 +105,21 @@
                 </div>
             </div>
 
-            <!-- Subtle Quick Actions -->
+                   <!-- Quick Actions -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
                 <!-- Create Article -->
                 @can(['canCreate'])
                 <a href="/articles/create" class="w-full group block">
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors duration-200">
-                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 rounded-xl shadow-lg hover:shadow-xl p-6 transition-all duration-200 transform hover:scale-105">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-medium text-gray-900 dark:text-white text-sm">Create</div>
-                                <div class="text-xs text-gray-600 dark:text-gray-400">article</div>
+                                <div class="font-semibold text-white text-lg">Create</div>
+                                <div class="text-blue-100 text-sm">New article</div>
                             </div>
                         </div>
                     </div>
@@ -128,16 +128,16 @@
 
                 <!-- View Statistics -->
                 <a href="/stats" class="w-full group block">
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-200">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-purple-50 dark:bg-purple-900/30 rounded-lg flex items-center justify-center group-hover:bg-purple-100 dark:group-hover:bg-purple-900/50 transition-colors duration-200">
-                                <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 rounded-xl shadow-lg hover:shadow-xl p-6 transition-all duration-200 transform hover:scale-105">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-medium text-gray-900 dark:text-white text-sm">Analytics</div>
-                                <div class="text-xs text-gray-600 dark:text-gray-400">View stats</div>
+                                <div class="font-semibold text-white text-lg">Analytics</div>
+                                <div class="text-purple-100 text-sm">View stats</div>
                             </div>
                         </div>
                     </div>
@@ -145,23 +145,23 @@
 
                 <!-- User Profile -->
                 <a href="/settings/profile" class="w-full group block" wire:navigate>
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md hover:border-orange-300 dark:hover:border-orange-600 transition-all duration-200">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-orange-50 dark:bg-orange-900/30 rounded-lg flex items-center justify-center group-hover:bg-orange-100 dark:group-hover:bg-orange-900/50 transition-colors duration-200">
-                                <svg class="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="bg-gradient-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 rounded-xl shadow-lg hover:shadow-xl p-6 transition-all duration-200 transform hover:scale-105">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-medium text-gray-900 dark:text-white text-sm">Profile</div>
-                                <div class="text-xs text-gray-600 dark:text-gray-400">Settings</div>
+                                <div class="font-semibold text-white text-lg">Profile</div>
+                                <div class="text-orange-100 text-sm">Settings</div>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
 
-            <!-- Subtle Articles List Section -->
+            <!-- Articles List Section -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <!-- Simple Header -->
                 <div class="bg-gray-50 dark:bg-gray-700/50 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
