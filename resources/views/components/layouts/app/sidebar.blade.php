@@ -54,30 +54,29 @@
                 <flux:icon.magnifying-glass class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                 <span class="text-sm">Search</span>
             </a>
-            @can('canCreate')
+
             <a href="{{ route('articles.create') }}" class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-900 dark:text-white">
                 <flux:icon.plus class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                 <span class="text-sm">Create</span>
             </a>
-            @endcan
-            @can('canCreate')
+
             <a href="{{ route('sections.index') }}" class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-900 dark:text-white" wire:navigate>
                 <flux:icon.archive-box class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                 <span class="text-sm">Sections</span>
             </a>
-            @endcan
-            @can('isAdmin')
+
+
             <a href="{{ route('admin') }}" class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-900 dark:text-white" wire:navigate>
                 <flux:icon.cog-6-tooth class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                 <span class="text-sm">Admin</span>
             </a>
-            @endcan
-            @can('canCreate')
+
+
             <a href="{{ route('drafts') }}" class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-900 dark:text-white" wire:navigate>
                 <flux:icon.document-text class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                 <span class="text-sm">My Drafts</span>
             </a>
-            @endcan
+
             <a href="{{ route('stats') }}" class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 text-gray-900 dark:text-white">
                 <flux:icon.chart-bar class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
                 <span class="text-sm">Stats</span>
@@ -92,11 +91,11 @@
             <div x-data="{ show: false }" class="relative">
                 <button @click="show = !show" class="hover:cursor-pointer flex items-center w-full text-left focus:outline-none">
                     <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-neutral-200 hover:bg-neutral-300 text-black dark:bg-neutral-700 dark:text-white items-center justify-center">
-                        {{ auth()->user()->initials() }}
+                         G
                     </span>
                     <span class="ml-3 flex-1">
-                        <span class="block font-semibold text-sm">{{ auth()->user()->name }}</span>
-                        <span class="block text-xs text-gray-500 dark:text-gray-400">{{ auth()->user()->email }}</span>
+                        <span class="block font-semibold text-sm">Guest</span>
+                        <span class="block text-xs text-gray-500 dark:text-gray-400">g@email.com</span>
                     </span>
                     <flux:icon.chevron-down class="w-4 h-4 ml-2 text-gray-400" />
                 </button>

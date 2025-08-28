@@ -11,7 +11,7 @@ class DraftsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $drafts = Article::where('author', $user->id)
+        $drafts = Article::where('author', 10003)
             ->where('published', 0)
             ->get();
 

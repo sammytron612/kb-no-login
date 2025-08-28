@@ -106,9 +106,9 @@
             </div>
 
                    <!-- Quick Actions -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-3  justify-center gap-4 mb-12">
                 <!-- Create Article -->
-                @can(['canCreate'])
+
                 <a href="/articles/create" class="w-full group block">
                     <div class="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 rounded-xl shadow-lg hover:shadow-xl p-6 transition-all duration-200 transform hover:scale-105">
                         <div class="flex items-center gap-4">
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                 </a>
-                @endcan
+
 
                 <!-- View Statistics -->
                 <a href="/stats" class="w-full group block">
